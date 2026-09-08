@@ -306,75 +306,8 @@ const App = () => {
           </div>
       </div>
 
-      {/* HERO SECTION - INSTITUCIONAL / ESTÁDIO */}
-      <section className="relative min-h-[85vh] flex flex-col justify-center bg-black overflow-hidden border-b border-white/5 mt-16 md:mt-20">
-        <div className="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1508344928928-7137b29de216?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover opacity-20" alt="Stadium" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
-        </div>
-
-        <div className="relative z-20 w-full max-w-7xl mx-auto px-10 pt-20 text-center md:text-left animate-smooth">
-            <h1 className="text-4xl md:text-6xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9] text-white drop-shadow-2xl">
-              A EXPERIÊNCIA <br/> <span className={currentVenue.accentClass}>DEFINITIVA</span>
-            </h1>
-            <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
-                <p className="text-sm md:text-xl font-black uppercase tracking-[0.3em] text-white italic">HOSPITALIDADE VIP</p>
-                <div className={`hidden md:block h-[2px] w-12 ${currentVenue.bgAccentClass} opacity-60`} />
-                <p className={`text-xs md:text-sm font-black uppercase tracking-widest ${currentVenue.accentClass} italic`}>{currentVenue.stadiumName}</p>
-            </div>
-        </div>
-
-        <div className="relative z-20 w-full max-w-7xl mx-auto px-10 pb-16 flex flex-col lg:flex-row items-center lg:items-end justify-between gap-8 mt-12">
-            <div className="flex flex-col gap-2 text-white/80 text-[10px] md:text-xs uppercase tracking-[0.3em] italic text-center lg:text-left">
-                <div className="flex items-center gap-3 justify-center lg:justify-start">
-                    <Verified size={16} className={currentVenue.accentClass} />
-                    <span className="font-bold">OPERAÇÃO OFICIAL ARENA HENKO</span>
-                </div>
-            </div>
-
-            <div className="flex flex-col items-center lg:items-end gap-5 w-full lg:w-auto">
-                <button 
-                  onClick={() => document.getElementById('calendario')?.scrollIntoView({ behavior: 'smooth' })}
-                  className={`w-full sm:w-80 py-5 rounded-full ${currentVenue.gradientClass} text-white font-black text-xs uppercase tracking-[0.3em] shadow-2xl hover:scale-[1.05] active:scale-95 transition-all flex items-center justify-center gap-4 group border border-transparent`}
-                >
-                  VER PRÓXIMOS JOGOS <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
-                </button>
-            </div>
-        </div>
-      </section>
-
-      {/* BTS SECTION - REDUZIDA, ESGOTADO, INSTAGRAM */}
-      <section className="relative py-24 bg-neutral-950 overflow-hidden border-b border-purple-900/30">
-        <div className="absolute inset-0 z-0">
-          <img src={BTS_BANNER_URL} className="w-full h-full object-cover object-center opacity-20 scale-105" alt="BTS" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-purple-900/20 to-black z-10" />
-        </div>
-
-        <div className="relative z-20 max-w-7xl mx-auto px-10 flex flex-col lg:flex-row items-center justify-between gap-10 text-center lg:text-left">
-          <div>
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white mb-3">
-              BTS WORLD TOUR <span className="text-purple-500 block lg:inline">- ARIRANG</span>
-            </h2>
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                <p className="text-sm md:text-base font-black uppercase tracking-widest text-purple-400 italic">MORUMBIS • NOV/2026</p>
-                <span className="bg-purple-600 text-white text-[10px] px-4 py-1.5 rounded-full uppercase tracking-widest font-black shadow-lg">Lote Esgotado</span>
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center lg:items-end gap-5">
-              <p className="text-purple-400 text-[10px] md:text-xs uppercase tracking-[0.2em] font-black">ACOMPANHE NO INSTAGRAM</p>
-              <button 
-                onClick={() => window.open("https://instagram.com/arenahenko", "_blank")}
-                className="w-full sm:w-auto px-10 py-5 rounded-full bg-neutral-900 border border-purple-500 text-white font-black text-xs uppercase tracking-[0.3em] shadow-2xl hover:bg-purple-600 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 group"
-              >
-                ACESSAR INSTAGRAM <Instagram size={18} className="group-hover:scale-110 transition-transform" />
-              </button>
-          </div>
-        </div>
-      </section>
-
       {/* BANNER PROMOÇÃO PARCEIRO BTS - ESTRUTURA HTML ORIGINAL */}
-      <section className="py-12 bg-neutral-950 border-b border-purple-900/30 flex justify-center px-6 overflow-hidden">
+      <section className="pt-28 md:pt-32 pb-12 bg-neutral-950 border-b border-purple-900/30 flex justify-center px-6 overflow-hidden">
         <div className="kmarote-banner">
           <img
             className="kb-photo"
@@ -412,6 +345,36 @@ const App = () => {
             <p className="kb-legal">
               Consulte o regulamento completo. *Imagens meramente ilustrativas.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* BTS SECTION - REDUZIDA, ESGOTADO, INSTAGRAM */}
+      <section className="relative py-24 bg-neutral-950 overflow-hidden border-b border-purple-900/30">
+        <div className="absolute inset-0 z-0">
+          <img src={BTS_BANNER_URL} className="w-full h-full object-cover object-center opacity-20 scale-105" alt="BTS" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-purple-900/20 to-black z-10" />
+        </div>
+
+        <div className="relative z-20 max-w-7xl mx-auto px-10 flex flex-col lg:flex-row items-center justify-between gap-10 text-center lg:text-left">
+          <div>
+            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white mb-3">
+              BTS WORLD TOUR <span className="text-purple-500 block lg:inline">- ARIRANG</span>
+            </h2>
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                <p className="text-sm md:text-base font-black uppercase tracking-widest text-purple-400 italic">MORUMBIS • NOV/2026</p>
+                <span className="bg-purple-600 text-white text-[10px] px-4 py-1.5 rounded-full uppercase tracking-widest font-black shadow-lg">Lote Esgotado</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center lg:items-end gap-5">
+              <p className="text-purple-400 text-[10px] md:text-xs uppercase tracking-[0.2em] font-black">ACOMPANHE NO INSTAGRAM</p>
+              <button 
+                onClick={() => window.open("https://instagram.com/arenahenko", "_blank")}
+                className="w-full sm:w-auto px-10 py-5 rounded-full bg-neutral-900 border border-purple-500 text-white font-black text-xs uppercase tracking-[0.3em] shadow-2xl hover:bg-purple-600 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 group"
+              >
+                ACESSAR INSTAGRAM <Instagram size={18} className="group-hover:scale-110 transition-transform" />
+              </button>
           </div>
         </div>
       </section>
