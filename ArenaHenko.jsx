@@ -250,6 +250,7 @@ const App = () => {
   return (
     <div className={`font-sans text-white bg-black animate-fadeIn overflow-x-hidden scroll-smooth font-black italic ${activeVenue === 'santos' ? 'theme-santos' : 'theme-spfc'}`}>
       <style>{`
+        @import url('https://cdn.jsdelivr.net/gh/Doco3/arena-henko@main/banner-kmarote/style.css');
         @keyframes customFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .animate-smooth { animation: customFadeIn 0.6s ease-out forwards; }
         @keyframes pulse-emerald { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
@@ -372,31 +373,57 @@ const App = () => {
         </div>
       </section>
 
-      {/* Sobre Section */}
-      <section id="sobre" className="py-24 px-6 bg-neutral-950 border-y border-neutral-900 text-center sm:text-left">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <span className={`${currentVenue.accentClass} text-xs uppercase tracking-[0.3em] mb-4 block font-black`}>{currentVenue.stadiumName}</span>
-            <h2 className="text-5xl font-black uppercase mb-8 italic text-white leading-tight">Onde a emoção <br/>encontra o luxo.</h2>
-            <p className="text-gray-400 text-lg mb-12 font-normal leading-relaxed italic">Localizado no {currentVenue.stadiumName}, o {currentVenue.name} oferece hospitalidade máxima e segurança total. Operação própria e oficial.</p>
+      {/* BANNER PROMOÇÃO PARCEIRO BTS - ESTRUTURA HTML ORIGINAL */}
+      <section className="py-12 bg-neutral-950 border-b border-purple-900/30 flex justify-center px-6 overflow-hidden">
+        <div className="kmarote-banner">
+          <img
+            className="kb-photo"
+            src="https://raw.githubusercontent.com/Doco3/arena-henko/main/banner-kmarote/images/show-bts.webp"
+            alt="Público em um show de K-pop visto do camarote, com palco iluminado em roxo e confetes no ar"
+          />
+
+          <div className="kb-logo">
+            <img src="https://raw.githubusercontent.com/Doco3/arena-henko/main/banner-kmarote/images/logo-kmarote.webp" alt="Logo da promoção Kmarote, da Klove.fan" />
           </div>
-          <div className="grid gap-4">
-             <div className={`bg-neutral-900/40 p-10 rounded-[3rem] border border-neutral-800 flex gap-6 items-start shadow-xl group ${currentVenue.hoverBorderAccentClass} transition-all`}>
-                <Shield className={`${currentVenue.accentClass} w-10 h-10 shrink-0`} />
-                <div><h4 className="text-lg font-black uppercase italic text-white">Operação Oficial</h4><p className="text-gray-500 text-sm mt-2 font-normal italic">Tratativa direta com o camarote. Sem intermediários.</p></div>
-             </div>
+
+          <div className="kb-text">
+            <p className="kb-headline">
+              1 INGRESSO VIP para o camarote do show do BTS
+              <span className="kb-headline__plus">+</span> 1 viagem para a Coreia do Sul.
+            </p>
+
+            <p className="kb-caption">Adquira seu pack de stickers por R$ 15,00.</p>
+
+            <div className="kb-actions">
+              <a
+                className="kb-pill"
+                href="https://kmarote.klove.fan/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >participe</a>
+              <a
+                className="kb-pill kb-pill--outline"
+                href="https://kmarote.klove.fan/regulamento"
+                target="_blank"
+                rel="noopener noreferrer"
+              >regulamento</a>
+            </div>
+
+            <p className="kb-legal">
+              Consulte o regulamento completo. *Imagens meramente ilustrativas.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Experiência Section */}
-      <section id="servicos" className="py-24 px-6 bg-black italic text-center">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-6xl font-black uppercase mb-20 italic text-white">Nossa <span className={currentVenue.accentClass}>Experiência</span></h2>
+      {/* Trust Bar */}
+      <section id="servicos" className={`bg-neutral-900/50 border-y border-white/5 py-24 ${currentVenue.accentClass} text-[10px] tracking-widest uppercase italic text-center font-black transition-colors`}>
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-4xl md:text-6xl font-black uppercase mb-16 italic text-white">Nossos <span className={currentVenue.accentClass}>Serviços</span></h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {SERVICES_DATA.map((service) => (
-              <div key={service.id} className={`group relative h-[400px] rounded-[3rem] overflow-hidden border border-white/5 bg-neutral-900 shadow-2xl transition-all hover:scale-[1.02] ${currentVenue.hoverBorderAccentClass}`}>
-                <img src={service.imageUrl} className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity" alt={service.title} />
+              <div key={service.id} className="group relative h-[300px] rounded-[3rem] overflow-hidden border border-white/5 bg-black shadow-2xl">
+                <img src={service.imageUrl} className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-all duration-700 group-hover:scale-110" alt={service.title} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
                 <div className="absolute bottom-10 left-10 right-10 text-left">
                   <div className={`${currentVenue.bgAccentClass} w-12 h-12 rounded-2xl flex items-center justify-center mb-6 shadow-xl`}>{service.icon}</div>
