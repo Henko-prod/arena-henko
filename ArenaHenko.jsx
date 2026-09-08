@@ -36,9 +36,13 @@ const TEAM_LOGOS = {
   MACARA: "https://upload.wikimedia.org/wikipedia/commons/5/57/Macara_6.png",
   MIRASSOL: "https://upload.wikimedia.org/wikipedia/commons/5/5b/Mirassol_FC_logo.png",
   CORITIBA: "https://upload.wikimedia.org/wikipedia/commons/c/ca/ECFC6.png",
-  BOLIVAR: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Escudo_de_Club_Bol%C3%ADvar.svg/1920px-Escudo_de_Club_Bol%C3%ADvar.svg.png",
+  BOLIVAR: "https://upload.wikimedia.org/wikipedia/commons/f/f2/Escudo_de_Club_Bol%C3%ADvar.svg",
   RBB: "https://a.espncdn.com/i/teamlogos/soccer/500/6079.png",
-  ATLETICO_MG: "https://cdn.freebiesupply.com/logos/large/2x/clube-atletico-mineiro-de-belo-horizonte-mg-logo-black-and-white.png"
+  ATLETICO_MG: "https://cdn.freebiesupply.com/logos/large/2x/clube-atletico-mineiro-de-belo-horizonte-mg-logo-black-and-white.png",
+  CRUZEIRO: "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Cruzeiro_Esporte_Clube_%28logo%29.svg/3840px-Cruzeiro_Esporte_Clube_%28logo%29.svg.png?utm_source=pt.wikipedia.org&utm_campaign=index&utm_content=thumbnail",
+  BOCA_JUNIORS: "https://a.espncdn.com/i/teamlogos/soccer/500/5.png",
+  INTERNACIONAL: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Escudo_do_Sport_Club_Internacional.svg?utm_source=pt.wikipedia.org&utm_campaign=index&utm_content=original",
+  VITORIA: "https://cdn.freebiesupply.com/logos/thumbs/2x/esporte-clube-vitoria-de-salvador-ba-logo.png"
 };
 
 const DEFAULT_VENUES_DATA = {
@@ -57,13 +61,17 @@ const DEFAULT_VENUES_DATA = {
       { id: 1, name: 'Brasileirão', subtitle: 'Série A 2026', image: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/85.png", 
         matches: [ 
           { id: 'br_spfc_2', date: '29/08', home: 'SPFC', away: 'RBB', time: '18h30', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.RBB },
-          { id: 'br_spfc_3', date: '05/09', home: 'SPFC', away: 'ATLÉTICO-MG', time: '16h00', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.ATLETICO_MG }
+          { id: 'br_spfc_3', date: '05/09', home: 'SPFC', away: 'ATLÉTICO-MG', time: '16h00', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.ATLETICO_MG },
+          { id: 'br_spfc_4', date: '19/09', home: 'SPFC', away: 'INTERNACIONAL', time: 'A definir', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.INTERNACIONAL },
+          { id: 'br_spfc_5', date: '10/10', home: 'SPFC', away: 'VITÓRIA', time: 'A definir', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.VITORIA }
         ] 
       },
       { id: 2, name: 'Copa do Brasil', subtitle: '2026', image: 'https://upload.wikimedia.org/wikipedia/pt/9/96/CopaDoBrasil.png', matches: [] },
       { id: 3, name: 'Paulistão', subtitle: '2026', image: 'https://i.imgur.com/Kl9LPUl.png', matches: [] },
-      { id: 4, name: 'Sudamericana', subtitle: '2026', image: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/CONMEBOL_Sudamericana_logo_%282017%29.svg/250px-CONMEBOL_Sudamericana_logo_%282017%29.svg.png', 
-        matches: [] 
+      { id: 4, name: 'Sudamericana', subtitle: 'Quartas de Final - Volta', image: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/CONMEBOL_Sudamericana_logo_%282017%29.svg/250px-CONMEBOL_Sudamericana_logo_%282017%29.svg.png', 
+        matches: [
+          { id: 'sd_spfc_qf', date: '15/09', home: 'SPFC', away: 'BOCA JUNIORS', time: '21h30', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.BOCA_JUNIORS }
+        ] 
       }
     ]
   },
@@ -80,11 +88,11 @@ const DEFAULT_VENUES_DATA = {
     gradientClass: 'bg-gradient-to-r from-gray-200 to-gray-500 text-black',
     sportData: [
       { id: 1, name: 'Brasileirão', subtitle: 'Série A 2026', image: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/85.png", 
-        matches: [ { id: 'br_sfc_1', date: '23/08', home: 'SANTOS', away: 'MIRASSOL', time: '16h00', homeLogo: TEAM_LOGOS.SANTOS, awayLogo: TEAM_LOGOS.MIRASSOL } ] },
+        matches: [ { id: 'br_sfc_2', date: '12/09', home: 'SANTOS', away: 'CRUZEIRO', time: '21h00', homeLogo: TEAM_LOGOS.SANTOS, awayLogo: TEAM_LOGOS.CRUZEIRO } ] },
       { id: 2, name: 'Copa do Brasil', subtitle: '2026', image: 'https://upload.wikimedia.org/wikipedia/pt/9/96/CopaDoBrasil.png', matches: [] },
       { id: 3, name: 'Paulistão', subtitle: '2026', image: 'https://i.imgur.com/Kl9LPUl.png', matches: [] },
       { id: 4, name: 'Sudamericana', subtitle: '2026', image: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/CONMEBOL_Sudamericana_logo_%282017%29.svg/250px-CONMEBOL_Sudamericana_logo_%282017%29.svg.png', 
-        matches: [ { id: 'sd_sfc_1', date: '13/08', home: 'SANTOS', away: 'MACARÁ', time: '21h30', homeLogo: TEAM_LOGOS.SANTOS, awayLogo: TEAM_LOGOS.MACARA } ] }
+        matches: [ { id: 'sd_sfc_2', date: '09/09', home: 'SANTOS', away: 'ATLÉTICO-MG', time: '19h00', homeLogo: TEAM_LOGOS.SANTOS, awayLogo: TEAM_LOGOS.ATLETICO_MG } ] }
     ]
   }
 };
@@ -99,8 +107,7 @@ const SERVICES_DATA = [
 ];
 
 const SHOWS_DATA = [
-  { id: 'show_bts', name: 'BTS - ARIRANG TOUR', date: '12/11/2026', image: BTS_BANNER_URL, desc: 'O retorno triunfal dos reis do K-Pop no Camarote Arena Henko.' },
-  { id: 'show_peao', name: 'Festa do Peão', date: '20 a 30/08/2026', image: 'https://i.imgur.com/GW8we0X.png', desc: 'Hospitalidade Arena Henko presente no maior evento sertanejo do Brasil.' }
+  { id: 'show_bts', name: 'BTS - ARIRANG TOUR', date: '12/11/2026', image: BTS_BANNER_URL, desc: 'O retorno triunfal dos reis do K-Pop no Camarote Arena Henko.' }
 ];
 
 const REVIEWS_DATA = [
@@ -191,8 +198,8 @@ const App = () => {
   const currentAlbum = useMemo(() => STATIC_GALLERY.find(a => a.id === activeAlbumId), [activeAlbumId]);
   
   const today = useMemo(() => {
-    // Current simulated date: Aug 19, 2026
-    const d = new Date('2026-08-19T00:00:00');
+    // Current simulated date: Sept 8, 2026
+    const d = new Date('2026-09-08T00:00:00');
     d.setHours(0, 0, 0, 0);
     return d;
   }, []);
@@ -247,8 +254,6 @@ const App = () => {
         .animate-smooth { animation: customFadeIn 0.6s ease-out forwards; }
         @keyframes pulse-emerald { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
         .animate-pulse-wa { animation: pulse-emerald 2s infinite; }
-        .bg-peao-hero { background-image: url('https://i.imgur.com/GW8we0X.png'); background-size: cover; background-position: center; }
-        .peao-hero-overlay { background: linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.1) 100%); }
         .drawer-content { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
         .drawer-open { max-height: 4000px; opacity: 1; padding-top: 1rem; }
       `}</style>
@@ -260,85 +265,78 @@ const App = () => {
           </button>
       </div>
 
-      {/* Header - Top Bar de Seleção de Estádio */}
-      <nav className="fixed top-0 w-full z-[100] bg-black/60 backdrop-blur-md border-b border-white/10 transition-all">
-        {/* Top Bar for Venue Selection */}
-        <div className="flex justify-center md:justify-end gap-4 px-8 py-2 bg-neutral-950 border-b border-white/5">
+      {/* Header - Logo e Seletor */}
+      <nav className="fixed top-0 w-full z-[100] bg-black/80 backdrop-blur-md border-b border-white/5 py-4 px-8 flex justify-between items-center transition-all">
+        <div className="flex items-center gap-6">
+          <div className="cursor-pointer" onClick={() => window.scrollTo({top:0, behavior:'smooth'})}>
+            <img src={LOGO_URL} alt="Logo" className="h-10 md:h-14 w-auto object-contain transition-transform hover:scale-105" />
+          </div>
+          <div className="w-px h-8 bg-white/20 hidden md:block"></div>
+          <div className="flex items-center gap-2">
             <button 
-                onClick={() => setActiveVenue('spfc')} 
-                className={`flex items-center gap-2 px-4 py-1 rounded-full text-[10px] uppercase tracking-widest transition-all ${activeVenue === 'spfc' ? 'bg-red-600 text-white' : 'text-gray-500 hover:text-white'}`}
+              onClick={() => setActiveVenue('spfc')} 
+              className={`p-2 rounded-xl transition-all flex items-center gap-2 ${activeVenue === 'spfc' ? 'bg-red-600/20 border border-red-600/50' : 'opacity-50 hover:opacity-100 hover:bg-white/5 border border-transparent'}`}
             >
-                <img src={TEAM_LOGOS.SPFC} className="h-4 w-4 object-contain" alt="SPFC" /> Morumbis
+              <img src={TEAM_LOGOS.SPFC} alt="SPFC" className="h-6 w-6 object-contain" />
+              <span className={`hidden md:block text-[10px] uppercase tracking-widest ${activeVenue === 'spfc' ? 'text-red-500' : 'text-white'}`}>Morumbis</span>
             </button>
             <button 
-                onClick={() => setActiveVenue('santos')} 
-                className={`flex items-center gap-2 px-4 py-1 rounded-full text-[10px] uppercase tracking-widest transition-all ${activeVenue === 'santos' ? 'bg-white text-black' : 'text-gray-500 hover:text-white'}`}
+              onClick={() => setActiveVenue('santos')} 
+              className={`p-2 rounded-xl transition-all flex items-center gap-2 ${activeVenue === 'santos' ? 'bg-white/20 border border-white/50' : 'opacity-50 hover:opacity-100 hover:bg-white/5 border border-transparent'}`}
             >
-                <img src={TEAM_LOGOS.SANTOS} className="h-4 w-4 object-contain" alt="Santos" /> Vila Belmiro
+              <img src={TEAM_LOGOS.SANTOS} alt="Santos" className="h-6 w-6 object-contain" />
+              <span className={`hidden md:block text-[10px] uppercase tracking-widest ${activeVenue === 'santos' ? 'text-white' : 'text-white'}`}>Vila Belmiro</span>
             </button>
+          </div>
         </div>
-
-        {/* Main Navigation */}
-        <div className="py-4 px-8 flex justify-between items-center">
-            <div className="cursor-pointer" onClick={() => window.scrollTo({top:0, behavior:'smooth'})}>
-              <img src={LOGO_URL} alt="Arena Henko Logo" className="h-10 md:h-14 w-auto object-contain transition-transform hover:scale-105" />
-            </div>
-            <div className="hidden lg:flex items-center gap-10 uppercase text-[11px] tracking-[0.2em] text-white/80">
-                {NAV_LINKS.map(link => <a key={link.name} href={link.href} className={`hover:${currentVenue.accentClass} transition-all`}>{link.name}</a>)}
-                
-                {/* Visual Indicator of Firebase Sync Status */}
-                {isFirebaseSyncing ? (
-                    <RefreshCw size={14} className="text-gray-600 animate-spin" />
-                ) : (
-                    <button onClick={() => setIsLoginModalOpen(true)} className={`hover:${currentVenue.accentClass} transition-all opacity-20`}><LockKeyhole size={14}/></button>
-                )}
-            </div>
-            <button onClick={() => setIsMenuOpen(true)} className="lg:hidden text-white p-2 hover:bg-white/5 rounded-lg transition-all"><MenuIcon /></button>
+        
+        <div className="hidden lg:flex items-center gap-8 uppercase text-[10px] tracking-[0.2em] text-white/80">
+            {NAV_LINKS.map(link => <a key={link.name} href={link.href} className={`hover:${currentVenue.accentClass} transition-all`}>{link.name}</a>)}
+            <button onClick={() => setIsLoginModalOpen(true)} className={`hover:${currentVenue.accentClass} transition-all opacity-20`}><LockKeyhole size={14}/></button>
         </div>
+        <button onClick={() => setIsMenuOpen(true)} className="lg:hidden text-white p-2 hover:bg-white/5 rounded-lg transition-all"><MenuIcon /></button>
       </nav>
 
       {/* Mobile Menu */}
       <div className={`fixed inset-0 z-[200] bg-black/98 backdrop-blur-3xl p-10 transition-all duration-500 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-          <button onClick={() => setIsMenuOpen(false)} className={`absolute top-10 right-10 p-4 bg-neutral-900 rounded-full text-white hover:${currentVenue.accentClass}`}><X /></button>
+          <button onClick={() => setIsMenuOpen(false)} className="absolute top-10 right-10 p-4 bg-neutral-900 rounded-full text-white hover:text-red-600"><X /></button>
           <div className="flex flex-col gap-8 justify-center items-center h-full text-center">
             {NAV_LINKS.map(link => <a key={link.name} href={link.href} onClick={() => setIsMenuOpen(false)} className={`text-4xl uppercase hover:${currentVenue.accentClass} italic transition-all`}>{link.name}</a>)}
           </div>
       </div>
 
-      {/* HERO SECTION - FESTA DO PEÃO */}
-      <section className="relative h-[85vh] flex flex-col justify-between bg-black overflow-hidden border-b border-white/5 mt-16 md:mt-20">
-        <div className="absolute inset-0 z-0 bg-peao-hero opacity-80" />
-        <div className="absolute inset-0 peao-hero-overlay z-10" />
+      {/* HERO SECTION - INSTITUCIONAL / ESTÁDIO */}
+      <section className="relative min-h-[85vh] flex flex-col justify-center bg-black overflow-hidden border-b border-white/5 mt-16 md:mt-20">
+        <div className="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1508344928928-7137b29de216?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover opacity-20" alt="Stadium" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
+        </div>
 
-        <div className="relative z-20 w-full max-w-7xl mx-auto px-10 pt-32 md:pt-40 text-center md:text-left animate-smooth">
+        <div className="relative z-20 w-full max-w-7xl mx-auto px-10 pt-20 text-center md:text-left animate-smooth">
             <h1 className="text-4xl md:text-6xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9] text-white drop-shadow-2xl">
-              FESTA DO <span className={currentVenue.accentClass}>PEÃO</span> <br/> DE BARRETOS
+              A EXPERIÊNCIA <br/> <span className={currentVenue.accentClass}>DEFINITIVA</span>
             </h1>
             <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
-                <p className="text-sm md:text-xl font-black uppercase tracking-[0.3em] text-white italic">BARRETÃO 2026</p>
+                <p className="text-sm md:text-xl font-black uppercase tracking-[0.3em] text-white italic">HOSPITALIDADE VIP</p>
                 <div className={`hidden md:block h-[2px] w-12 ${currentVenue.bgAccentClass} opacity-60`} />
-                <p className={`text-xs md:text-sm font-black uppercase tracking-widest ${currentVenue.accentClass} italic`}>20 A 30 DE AGOSTO</p>
+                <p className={`text-xs md:text-sm font-black uppercase tracking-widest ${currentVenue.accentClass} italic`}>{currentVenue.stadiumName}</p>
             </div>
         </div>
 
-        <div className="relative z-20 w-full max-w-7xl mx-auto px-10 pb-16 flex flex-col lg:flex-row items-center lg:items-end justify-between gap-8">
+        <div className="relative z-20 w-full max-w-7xl mx-auto px-10 pb-16 flex flex-col lg:flex-row items-center lg:items-end justify-between gap-8 mt-12">
             <div className="flex flex-col gap-2 text-white/80 text-[10px] md:text-xs uppercase tracking-[0.3em] italic text-center lg:text-left">
                 <div className="flex items-center gap-3 justify-center lg:justify-start">
                     <Verified size={16} className={currentVenue.accentClass} />
-                    <span className="font-bold">HOSPITALIDADE ARENA HENKO</span>
-                </div>
-                <div className="flex items-center gap-3 justify-center lg:justify-start">
-                    <Star size={16} className={`${currentVenue.accentClass} fill-current`} />
-                    <span className="font-bold">PRESENÇA CONFIRMADA</span>
+                    <span className="font-bold">OPERAÇÃO OFICIAL ARENA HENKO</span>
                 </div>
             </div>
 
             <div className="flex flex-col items-center lg:items-end gap-5 w-full lg:w-auto">
                 <button 
-                  onClick={() => window.open(getWaLink(`QUERO IR NA FESTA DO PEÃO COM O ${currentVenue.name}`))}
+                  onClick={() => document.getElementById('calendario')?.scrollIntoView({ behavior: 'smooth' })}
                   className={`w-full sm:w-80 py-5 rounded-full ${currentVenue.gradientClass} text-white font-black text-xs uppercase tracking-[0.3em] shadow-2xl hover:scale-[1.05] active:scale-95 transition-all flex items-center justify-center gap-4 group border border-transparent`}
                 >
-                  GARANTIR MEU LUGAR <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
+                  VER PRÓXIMOS JOGOS <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
                 </button>
             </div>
         </div>
