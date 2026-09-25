@@ -42,7 +42,8 @@ const TEAM_LOGOS = {
   CRUZEIRO: "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Cruzeiro_Esporte_Clube_%28logo%29.svg/3840px-Cruzeiro_Esporte_Clube_%28logo%29.svg.png?utm_source=pt.wikipedia.org&utm_campaign=index&utm_content=thumbnail",
   BOCA_JUNIORS: "https://a.espncdn.com/i/teamlogos/soccer/500/5.png",
   INTERNACIONAL: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Escudo_do_Sport_Club_Internacional.svg?utm_source=pt.wikipedia.org&utm_campaign=index&utm_content=original",
-  VITORIA: "https://cdn.freebiesupply.com/logos/thumbs/2x/esporte-clube-vitoria-de-salvador-ba-logo.png"
+  VITORIA: "https://cdn.freebiesupply.com/logos/thumbs/2x/esporte-clube-vitoria-de-salvador-ba-logo.png",
+  VASCO: "https://a.espncdn.com/i/teamlogos/soccer/500/3454.png"
 };
 
 const DEFAULT_VENUES_DATA = {
@@ -60,10 +61,9 @@ const DEFAULT_VENUES_DATA = {
     sportData: [
       { id: 1, name: 'Brasileirão', subtitle: 'Série A 2026', image: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/85.png", 
         matches: [ 
-          { id: 'br_spfc_2', date: '29/08', home: 'SPFC', away: 'RBB', time: '18h30', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.RBB },
-          { id: 'br_spfc_3', date: '05/09', home: 'SPFC', away: 'ATLÉTICO-MG', time: '16h00', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.ATLETICO_MG },
-          { id: 'br_spfc_4', date: '19/09', home: 'SPFC', away: 'INTERNACIONAL', time: 'A definir', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.INTERNACIONAL },
-          { id: 'br_spfc_5', date: '10/10', home: 'SPFC', away: 'VITÓRIA', time: 'A definir', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.VITORIA }
+          { id: 'br_spfc_santos', date: '02/10', home: 'SPFC', away: 'SANTOS', time: '20h00', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.SANTOS },
+          { id: 'br_spfc_vitoria', date: '10/10', home: 'SPFC', away: 'VITÓRIA', time: '21h00', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.VITORIA },
+          { id: 'br_spfc_vasco', date: '18/10', home: 'SPFC', away: 'VASCO', time: '15h00', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.VASCO }
         ] 
       },
       { id: 2, name: 'Copa do Brasil', subtitle: '2026', image: 'https://upload.wikimedia.org/wikipedia/pt/9/96/CopaDoBrasil.png', matches: [] },
@@ -198,8 +198,8 @@ const App = () => {
   const currentAlbum = useMemo(() => STATIC_GALLERY.find(a => a.id === activeAlbumId), [activeAlbumId]);
   
   const today = useMemo(() => {
-    // Current simulated date: Sept 8, 2026
-    const d = new Date('2026-09-08T00:00:00');
+    // Current simulated date: Sept 25, 2026
+    const d = new Date('2026-09-25T00:00:00');
     d.setHours(0, 0, 0, 0);
     return d;
   }, []);
