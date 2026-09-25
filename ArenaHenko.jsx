@@ -192,6 +192,19 @@ const App = () => {
   const [isSubmittingVip, setIsSubmittingVip] = useState(false);
   const [vipSuccess, setVipSuccess] = useState(false);
 
+  // NOVO: Faz o scroll funcionar para links com # (QR Code)
+  useEffect(() => {
+    if (window.location.hash) {
+      const elementId = window.location.hash.replace('#', '');
+      setTimeout(() => {
+        const element = document.getElementById(elementId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 500); // Espera meio segundo para a tela renderizar antes de descer
+    }
+  }, []);
+
   useEffect(() => {
     const initAuth = async () => {
       try {
