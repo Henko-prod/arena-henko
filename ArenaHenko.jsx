@@ -34,6 +34,7 @@ const BTS_BANNER_URL = 'https://static.wikia.nocookie.net/the-bangtan-boys/image
 const TEAM_LOGOS = {
   SPFC: "https://www.spfcpedia.com.br/escudos/bra_sp_sao-paulo_1938-19XXcamisa.png",
   SANTOS: "https://upload.wikimedia.org/wikipedia/commons/1/15/Santos_Logo.png",
+  FLAMENGO: "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/orE554NToSkH6nuwofe7Yg_500x500.png",
   MACARA: "https://upload.wikimedia.org/wikipedia/commons/5/57/Macara_6.png",
   MIRASSOL: "https://upload.wikimedia.org/wikipedia/commons/5/5b/Mirassol_FC_logo.png",
   CORITIBA: "https://upload.wikimedia.org/wikipedia/commons/c/ca/ECFC6.png",
@@ -63,8 +64,7 @@ const DEFAULT_VENUES_DATA = {
       { id: 1, name: 'Brasileirão', subtitle: 'Série A 2026', image: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/85.png", 
         matches: [ 
           { id: 'br_spfc_santos', date: '02/10', home: 'SPFC', away: 'SANTOS', time: '20h00', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.SANTOS },
-          { id: 'br_spfc_vitoria', date: '10/10', home: 'SPFC', away: 'VITÓRIA', time: '21h00', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.VITORIA },
-          { id: 'br_spfc_vasco', date: '18/10', home: 'SPFC', away: 'VASCO', time: '15h00', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.VASCO }
+          { id: 'br_spfc_vitoria', date: '10/10', home: 'SPFC', away: 'VITÓRIA', time: '21h00', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.VITORIA }
         ] 
       },
       { id: 2, name: 'Copa do Brasil', subtitle: '2026', image: 'https://upload.wikimedia.org/wikipedia/pt/9/96/CopaDoBrasil.png', matches: [] },
@@ -87,7 +87,11 @@ const DEFAULT_VENUES_DATA = {
     gradientClass: 'bg-gradient-to-r from-gray-200 to-gray-500 text-black',
     sportData: [
       { id: 1, name: 'Brasileirão', subtitle: 'Série A 2026', image: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/85.png", 
-        matches: [ { id: 'br_sfc_2', date: '12/09', home: 'SANTOS', away: 'CRUZEIRO', time: '21h00', homeLogo: TEAM_LOGOS.SANTOS, awayLogo: TEAM_LOGOS.CRUZEIRO } ] },
+        matches: [ 
+          { id: 'br_sfc_2', date: '12/09', home: 'SANTOS', away: 'CRUZEIRO', time: '21h00', homeLogo: TEAM_LOGOS.SANTOS, awayLogo: TEAM_LOGOS.CRUZEIRO },
+          { id: 'br_sfc_fla', date: '08/10', home: 'SANTOS', away: 'FLAMENGO', time: '19h30', homeLogo: TEAM_LOGOS.SANTOS, awayLogo: TEAM_LOGOS.FLAMENGO }
+        ] 
+      },
       { id: 2, name: 'Copa do Brasil', subtitle: '2026', image: 'https://upload.wikimedia.org/wikipedia/pt/9/96/CopaDoBrasil.png', matches: [] },
       { id: 3, name: 'Paulistão', subtitle: '2026', image: 'https://i.imgur.com/Kl9LPUl.png', matches: [] },
       { id: 4, name: 'Sudamericana', subtitle: '2026', image: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/CONMEBOL_Sudamericana_logo_%282017%29.svg/250px-CONMEBOL_Sudamericana_logo_%282017%29.svg.png', 
