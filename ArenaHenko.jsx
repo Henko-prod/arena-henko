@@ -143,6 +143,14 @@ const STATIC_GALLERY = [
     folder: '/acdc-2802',
     cover: 'https://www.rbsdirect.com.br/filestore/8/5/6/4/1/9/4_9472ea360a1702b/4914658_704acea3d79d4d7.jpg?version=1575255600',
     photos: Array.from({length: 30}, (_, i) => `show-acdc-${String(i+1).padStart(2, '0')}.jpeg`)
+  },
+  {
+    id: 'the-weeknd-30-04',
+    name: 'The Weeknd - 30/04',
+    folder: '/The Weeknd - 3004',
+    cover: '/capa.jpg',
+    // 🚨 AQUI VOCÊ COLOCA O NOME EXATO DOS ARQUIVOS DAS FOTOS QUE ESTÃO NA PASTA
+    photos: ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg', '06.jpg', '07.jpg', '08.jpg', '09.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg'] 
   }
 ];
 
