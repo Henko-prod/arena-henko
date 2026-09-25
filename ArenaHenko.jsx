@@ -267,29 +267,66 @@ const App = () => {
 
   const getWaLink = (msg) => `https://wa.me/5511940741355?text=${encodeURIComponent(msg)}`;
 
+  // VALIDAÇÕES DO VIP (NOVIDADE AQUI!)
+  const handlePhoneChange = (e) => {
+      let value = e.target.value.replace(/\D/g, ''); // Arranca as letras fora
+      if (value.length > 11) value = value.slice(0, 11);
+
+      let formattedValue = value;
+      if (value.length > 2) {
+          formattedValue = `(${value.slice(0, 2)}) `;
+          if (value.length > 7) {
+              formattedValue += `${value.slice(2, 7)}-${value.slice(7)}`;
+          } else if (value.length > 6) {
+              formattedValue += `${value.slice(2, 6)}-${value.slice(6)}`;
+          } else {
+              formattedValue += value.slice(2);
+          }
+      }
+      setVipForm({ ...vipForm, phone: formattedValue });
+  };
+
+  const isValidEmail = (email) => {
+      if (!email) return false;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return emailRegex.test(email);
+  };
+
   const handleVipSubmit = async (e) => {
     e.preventDefault();
-    if (!vipForm.name || !vipForm.phone) {
-        setToast("Preencha Nome e Telefone!");
+
+    // TRAVAS DE SEGURANÇA
+    if (!vipForm.name) {
+        setToast("Preencha seu Nome!");
         setTimeout(() => setToast(null), 3000);
         return;
     }
-    
+
+    const digitsOnly = vipForm.phone.replace(/\D/g, '');
+    if (digitsOnly.length < 10) {
+        setToast("Digite um telefone válido com DDD!");
+        setTimeout(() => setToast(null), 3000);
+        return;
+    }
+
+    if (vipForm.email && !isValidEmail(vipForm.email)) {
+        setToast("Digite um e-mail válido com .com ou .com.br!");
+        setTimeout(() => setToast(null), 3000);
+        return;
+    }
+
     setIsSubmittingVip(true);
     
     try {
-        // 🚨 COLE AQUI O SEU NOVO LINK DO GOOGLE APPS SCRIPT DENTRO DAS ASPAS:
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzfBwGyln9khoahBhBXPQIR4-cc4jMnv29OuKeWbtLVA5U0pD4LjVDRGrVchU8flj7HWA/exec';
         
-        // Monta os parâmetros exatamente como você fez no navegador
         const params = new URLSearchParams({
             nome: vipForm.name,
             telefone: vipForm.phone,
-            email: vipForm.email,
+            email: vipForm.email || 'Não informado',
             data: new Date().toLocaleString('pt-BR')
         });
         
-        // Disparo à prova de bloqueios de CORS (via GET)
         await fetch(`${GOOGLE_SCRIPT_URL}?${params.toString()}`, {
             method: 'GET',
             mode: 'no-cors'
@@ -638,7 +675,7 @@ const App = () => {
                         <div className="grid md:grid-cols-2 gap-4">
                             <div>
                                 <label className="text-[10px] uppercase text-gray-500 tracking-widest block mb-2 px-2">WhatsApp *</label>
-                                <input type="tel" required value={vipForm.phone} onChange={e => setVipForm({...vipForm, phone: e.target.value})} className="w-full bg-neutral-900 border border-neutral-800 focus:border-white rounded-2xl px-6 py-4 text-white outline-none transition-all placeholder:text-gray-700 font-bold" placeholder="(00) 00000-0000" />
+                                <input type="tel" required value={vipForm.phone} onChange={handlePhoneChange} className="w-full bg-neutral-900 border border-neutral-800 focus:border-white rounded-2xl px-6 py-4 text-white outline-none transition-all placeholder:text-gray-700 font-bold" placeholder="(00) 00000-0000" />
                             </div>
                             <div>
                                 <label className="text-[10px] uppercase text-gray-500 tracking-widest block mb-2 px-2">E-mail</label>
