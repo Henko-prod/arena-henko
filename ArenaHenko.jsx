@@ -148,7 +148,7 @@ const STATIC_GALLERY = [
     id: 'the-weeknd-30-04',
     name: 'The Weeknd - 30/04',
     folder: '/The Weeknd - 3004',
-    cover: '/capa.jpg',
+    cover: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8I8ec_zK_5zE0-LC_2Xv7BTF0oqX8a6RBAr5NW7OFQg&s=10',
     // 🚨 AQUI VOCÊ COLOCA O NOME EXATO DOS ARQUIVOS DAS FOTOS QUE ESTÃO NA PASTA
     photos: ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg', '06.jpg', '07.jpg', '08.jpg', '09.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg'] 
   }
