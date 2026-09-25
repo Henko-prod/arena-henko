@@ -267,32 +267,44 @@ const App = () => {
 
   const getWaLink = (msg) => `https://wa.me/5511940741355?text=${encodeURIComponent(msg)}`;
 
-const handleVipSubmit = async (e) => {
+  const handleVipSubmit = async (e) => {
     e.preventDefault();
-    setVipLoading(true);
+    if (!vipForm.name || !vipForm.phone) {
+        setToast("Preencha Nome e Telefone!");
+        setTimeout(() => setToast(null), 3000);
+        return;
+    }
+    
+    setIsSubmittingVip(true);
+    
     try {
-      await fetch('https://script.google.com/macros/s/AKfycbxN9u6iHFilnRCqN75cruESyH_jVoUF05m6XU51RZBYKRtKIHhOb1zqLaMAOkq9Fy3o5Q/exec', {
-        method: 'POST',
-        mode: 'no-cors', // Truque ninja para o Google não bloquear o envio
-        headers: {
-          'Content-Type': 'text/plain', 
-        },
-        body: JSON.stringify({
-          nome: vipData.nome,
-          telefone: vipData.telefone,
-          email: vipData.email,
-          data: new Date().toLocaleString('pt-BR') // Já manda a data bonitinha pro Excel!
-        })
-      });
-      
-      // Como a requisição vai direto pro Google, assumimos sucesso instantâneo
-      setVipSuccess(true);
-      setVipData({ nome: '', telefone: '', email: '' });
-      setTimeout(() => setVipSuccess(false), 3000);
+        const payload = {
+            nome: vipForm.name,
+            telefone: vipForm.phone,
+            email: vipForm.email,
+            data: new Date().toLocaleString('pt-BR')
+        };
+        
+        // Atirando pro Webhook do Make
+        await fetch('https://hook.us2.make.com/tfyb7ui72uf5ysdv7y9jrz1jpqplo1di', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        setVipSuccess(true);
+        setVipForm({ name: '', phone: '', email: '' });
+        
+        setTimeout(() => {
+            setVipSuccess(false);
+        }, 5000);
+        
     } catch (error) {
-      console.error("Erro ao enviar dados VIP:", error);
+        console.error("Erro ao cadastrar VIP:", error);
+        setToast("Erro de conexão. Tente novamente.");
+        setTimeout(() => setToast(null), 3000);
     } finally {
-      setVipLoading(false);
+        setIsSubmittingVip(false);
     }
   };
 
@@ -317,7 +329,6 @@ const handleVipSubmit = async (e) => {
           </button>
       </div>
 
-      {/* Header - Logo e Seletor */}
       <nav className="fixed top-0 w-full z-[100] bg-black/80 backdrop-blur-md border-b border-white/5 py-4 px-8 flex justify-between items-center transition-all">
         <div className="flex items-center gap-6">
           <div className="cursor-pointer" onClick={() => window.scrollTo({top:0, behavior:'smooth'})}>
@@ -357,7 +368,6 @@ const handleVipSubmit = async (e) => {
           </div>
       </div>
 
-      {/* BANNER PROMOÇÃO PARCEIRO BTS - Puxando da pasta local public/banner-kmarote/ */}
       <section className="pt-28 md:pt-32 pb-12 bg-neutral-950 border-b border-purple-900/30 flex justify-center px-6 overflow-hidden">
         <div className="kmarote-banner">
           <img
@@ -400,7 +410,6 @@ const handleVipSubmit = async (e) => {
         </div>
       </section>
 
-      {/* BTS SECTION */}
       <section className="relative py-24 bg-neutral-950 overflow-hidden border-b border-purple-900/30">
         <div className="absolute inset-0 z-0">
           <img src={BTS_BANNER_URL} className="w-full h-full object-cover object-center opacity-20 scale-105" alt="BTS" />
@@ -430,7 +439,6 @@ const handleVipSubmit = async (e) => {
         </div>
       </section>
 
-      {/* Trust Bar */}
       <section id="servicos" className={`bg-neutral-900/50 border-y border-white/5 py-24 ${currentVenue.accentClass} text-[10px] tracking-widest uppercase italic text-center font-black transition-colors`}>
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-4xl md:text-6xl font-black uppercase mb-16 italic text-white">Nossos <span className={currentVenue.accentClass}>Serviços</span></h2>
@@ -450,7 +458,6 @@ const handleVipSubmit = async (e) => {
         </div>
       </section>
 
-      {/* Agenda Futebol */}
       <section id="calendario" className="py-24 px-6 bg-neutral-950 text-white italic border-y border-white/5 relative">
         <h2 className="text-4xl md:text-6xl font-black uppercase text-center mb-16 italic">Agenda <span className={currentVenue.accentClass}>{currentVenue.teamName}</span></h2>
         
@@ -524,7 +531,6 @@ const handleVipSubmit = async (e) => {
         </div>
       </section>
 
-      {/* Mega Eventos */}
       <section id="eventos" className="py-24 px-6 bg-black text-center italic border-b border-white/5">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-6xl font-black uppercase mb-20 italic text-white">Mega <span className={currentVenue.accentClass}>Eventos</span></h2>
@@ -544,7 +550,6 @@ const handleVipSubmit = async (e) => {
         </div>
       </section>
 
-      {/* Depoimentos */}
       <section id="reviews" className="py-24 bg-neutral-950 border-b border-white/5 text-center italic">
         <div className="max-w-4xl mx-auto px-6">
           <Quote className={`w-12 h-12 ${currentVenue.accentClass} mx-auto mb-8 opacity-40`} />
@@ -560,7 +565,6 @@ const handleVipSubmit = async (e) => {
         </div>
       </section>
 
-      {/* Galeria */}
       <section id="galeria" className="py-24 px-6 bg-black border-b border-white/5 text-center italic">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center justify-center mb-16 gap-4">
@@ -606,7 +610,6 @@ const handleVipSubmit = async (e) => {
         </div>
       </section>
 
-      {/* CLUBE VIP - CAPTURA DE LEADS (WEBHOOK MAKE) */}
       <section id="clube-vip" className="py-24 px-6 bg-neutral-950 text-center italic relative overflow-hidden">
          <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] ${currentVenue.bgAccentClass} blur-[120px] opacity-5 rounded-full pointer-events-none`} />
          <div className="max-w-3xl mx-auto relative z-10">
@@ -648,7 +651,6 @@ const handleVipSubmit = async (e) => {
          </div>
       </section>
 
-      {/* Footer */}
       <footer id="contato" className="py-32 bg-neutral-950 border-t border-neutral-900 text-center italic">
         <h2 className="text-5xl md:text-7xl font-black mb-20 uppercase italic text-white leading-none">VIVA SUA <br/><span className={currentVenue.accentClass}>ARENA HENKO.</span></h2>
         <div className="grid sm:grid-cols-3 gap-6 max-w-5xl mx-auto px-6 text-white uppercase text-[10px] tracking-widest mb-20 font-black">
