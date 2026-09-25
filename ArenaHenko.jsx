@@ -278,18 +278,20 @@ const App = () => {
     setIsSubmittingVip(true);
     
     try {
-        const payload = {
+        // 🚨 COLE AQUI O SEU NOVO LINK DO GOOGLE APPS SCRIPT DENTRO DAS ASPAS:
+        const GOOGLE_SCRIPT_URL = 'COLE_SEU_NOVO_LINK_AQUI';
+        
+        const params = new URLSearchParams({
             nome: vipForm.name,
             telefone: vipForm.phone,
             email: vipForm.email,
             data: new Date().toLocaleString('pt-BR')
-        };
+        });
         
-        // Atirando pro Webhook do Make
-        await fetch('https://hook.us2.make.com/tfyb7ui72uf5ysdv7y9jrz1jpqplo1di', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+        // Disparo à prova de bloqueios de CORS (via GET)
+        await fetch(`${GOOGLE_SCRIPT_URL}?${params.toString()}`, {
+            method: 'GET',
+            mode: 'no-cors'
         });
 
         setVipSuccess(true);
