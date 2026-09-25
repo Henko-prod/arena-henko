@@ -271,18 +271,21 @@ const handleVipSubmit = async (e) => {
     e.preventDefault();
     setVipLoading(true);
     try {
-      await fetch('https://hook.us2.make.com/cnn42br5qi6lb66qp8pje6e9rzkanwyo', {
+      await fetch('https://script.google.com/macros/s/AKfycbxN9u6iHFilnRCqN75cruESyH_jVoUF05m6XU51RZBYKRtKIHhOb1zqLaMAOkq9Fy3o5Q/exec', {
         method: 'POST',
+        mode: 'no-cors', // Truque ninja para o Google não bloquear o envio
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'text/plain', 
         },
         body: JSON.stringify({
           nome: vipData.nome,
           telefone: vipData.telefone,
           email: vipData.email,
-          data: new Date().toISOString()
+          data: new Date().toLocaleString('pt-BR') // Já manda a data bonitinha pro Excel!
         })
       });
+      
+      // Como a requisição vai direto pro Google, assumimos sucesso instantâneo
       setVipSuccess(true);
       setVipData({ nome: '', telefone: '', email: '' });
       setTimeout(() => setVipSuccess(false), 3000);
@@ -291,6 +294,7 @@ const handleVipSubmit = async (e) => {
     } finally {
       setVipLoading(false);
     }
+  };
 
   return (
     <div className={`font-sans text-white bg-black animate-fadeIn overflow-x-hidden scroll-smooth font-black italic ${activeVenue === 'santos' ? 'theme-santos' : 'theme-spfc'}`}>
