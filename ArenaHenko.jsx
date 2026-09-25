@@ -279,8 +279,9 @@ const App = () => {
     
     try {
         // 🚨 COLE AQUI O SEU NOVO LINK DO GOOGLE APPS SCRIPT DENTRO DAS ASPAS:
-        const GOOGLE_SCRIPT_URL = 'COLE_SEU_NOVO_LINK_AQUI';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzfBwGyln9khoahBhBXPQIR4-cc4jMnv29OuKeWbtLVA5U0pD4LjVDRGrVchU8flj7HWA/exec';
         
+        // Monta os parâmetros exatamente como você fez no navegador
         const params = new URLSearchParams({
             nome: vipForm.name,
             telefone: vipForm.phone,
