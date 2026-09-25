@@ -107,7 +107,22 @@ const SERVICES_DATA = [
 ];
 
 const SHOWS_DATA = [
-  { id: 'show_bts', name: 'BTS - ARIRANG TOUR', date: '12/11/2026', image: BTS_BANNER_URL, desc: 'O retorno triunfal dos reis do K-Pop no Camarote Arena Henko.' }
+  { 
+    id: 'show_bts', 
+    name: 'BTS - ARIRANG TOUR', 
+    date: '12/11/2026', 
+    image: BTS_BANNER_URL, 
+    desc: 'O retorno triunfal dos reis do K-Pop no Camarote Arena Henko.',
+    imgClass: 'scale-105 group-hover:scale-110'
+  },
+  { 
+    id: 'show_buteco', 
+    name: 'O MAIOR BUTECO DO MUNDO', 
+    date: '12/12/2026', 
+    image: 'https://i.imgur.com/9x3iz4o.png', 
+    desc: 'A maior experiência sertaneja do Brasil com open bar premium e vista privilegiada.',
+    imgClass: 'object-bottom origin-bottom scale-[1.20] group-hover:scale-[1.25]'
+  }
 ];
 
 const REVIEWS_DATA = [
@@ -250,7 +265,7 @@ const App = () => {
   return (
     <div className={`font-sans text-white bg-black animate-fadeIn overflow-x-hidden scroll-smooth font-black italic ${activeVenue === 'santos' ? 'theme-santos' : 'theme-spfc'}`}>
       <style>{`
-        @import url('https://cdn.jsdelivr.net/gh/Doco3/arena-henko@main/banner-kmarote/style.css');
+        @import url('/banner-kmarote/style.css');
         @keyframes customFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .animate-smooth { animation: customFadeIn 0.6s ease-out forwards; }
         @keyframes pulse-emerald { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
@@ -258,6 +273,9 @@ const App = () => {
         .drawer-content { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
         .drawer-open { max-height: 4000px; opacity: 1; padding-top: 1rem; }
       `}</style>
+      
+      {/* Importação direta e forçada do CSS via Link para evitar bloqueios do React */}
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Doco3/arena-henko@main/banner-kmarote/style.css?update=1" />
 
       {/* Floating WhatsApp */}
       <div className="fixed bottom-6 right-6 z-[250]">
@@ -311,12 +329,12 @@ const App = () => {
         <div className="kmarote-banner">
           <img
             className="kb-photo"
-            src="https://raw.githubusercontent.com/Doco3/arena-henko/main/banner-kmarote/images/show-bts.webp"
+            src="/banner-kmarote/images/show-bts.webp"
             alt="Público em um show de K-pop visto do camarote, com palco iluminado em roxo e confetes no ar"
           />
 
           <div className="kb-logo">
-            <img src="https://raw.githubusercontent.com/Doco3/arena-henko/main/banner-kmarote/images/logo-kmarote.webp" alt="Logo da promoção Kmarote, da Klove.fan" />
+            <img src="/banner-kmarote/images/logo-kmarote.webp" alt="Logo da promoção Kmarote, da Klove.fan" />
           </div>
 
           <div className="kb-text">
@@ -481,7 +499,7 @@ const App = () => {
             {SHOWS_DATA.map((show) => (
               <div key={show.id} className="group flex flex-col text-left">
                 <div className={`relative h-[400px] rounded-[3.5rem] overflow-hidden mb-8 border border-neutral-800 ${currentVenue.hoverBorderAccentClass} transition-all duration-700 shadow-2xl bg-neutral-900`}>
-                  <img src={show.image} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-110" alt={show.name} />
+                  <img src={show.image} className={`w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ${show.imgClass || 'scale-105 group-hover:scale-110'}`} alt={show.name} />
                 </div>
                 <span className={`${currentVenue.accentClass} text-[11px] font-black uppercase tracking-[0.4em] mb-3 block italic`}>{show.date}</span>
                 <h3 className="text-3xl font-black uppercase mb-4 italic text-white leading-none">{show.name}</h3>
