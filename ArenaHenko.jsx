@@ -4,7 +4,8 @@ import {
   CheckCircle, ArrowRight, Clock, Shield, ChevronDown, Star, MessageCircle, Quote, 
   LockKeyhole, Coffee, Wine, ShieldCheck, Headphones, MousePointerClick, Smartphone, UserCheck,
   Beer, Zap, Play, Image as ImageIcon, Plus, Trash2, FolderOpen, AlertTriangle, Loader2, Download, Link as LinkIcon, ArrowLeft,
-  Sparkles, Heart, MicVocal, Globe, Flame, Music2, TrendingUp, Verified, Info, Ticket, RefreshCw
+  Sparkles, Heart, MicVocal, Globe, Flame, Music2, TrendingUp, Verified, Info, Ticket, RefreshCw,
+  Send
 } from 'lucide-react';
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'firebase/auth';
@@ -69,9 +70,7 @@ const DEFAULT_VENUES_DATA = {
       { id: 2, name: 'Copa do Brasil', subtitle: '2026', image: 'https://upload.wikimedia.org/wikipedia/pt/9/96/CopaDoBrasil.png', matches: [] },
       { id: 3, name: 'Paulistão', subtitle: '2026', image: 'https://i.imgur.com/Kl9LPUl.png', matches: [] },
       { id: 4, name: 'Sudamericana', subtitle: 'Quartas de Final - Volta', image: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/CONMEBOL_Sudamericana_logo_%282017%29.svg/250px-CONMEBOL_Sudamericana_logo_%282017%29.svg.png', 
-        matches: [
-          { id: 'sd_spfc_qf', date: '15/09', home: 'SPFC', away: 'BOCA JUNIORS', time: '21h30', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.BOCA_JUNIORS }
-        ] 
+        matches: [] 
       }
     ]
   },
@@ -150,6 +149,7 @@ const NAV_LINKS = [
   { name: 'Eventos', href: '#eventos' },
   { name: 'Experiência', href: '#servicos' },
   { name: 'Galeria', href: '#galeria' },
+  { name: 'Clube VIP', href: '#clube-vip' },
   { name: 'Contato', href: '#contato' },
 ];
 
@@ -182,6 +182,11 @@ const App = () => {
   const [isAlbumOpen, setIsAlbumOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [adminInputPass, setAdminInputPass] = useState('');
+
+  // Estados do Formulário VIP
+  const [vipForm, setVipForm] = useState({ name: '', phone: '', email: '' });
+  const [isSubmittingVip, setIsSubmittingVip] = useState(false);
+  const [vipSuccess, setVipSuccess] = useState(false);
 
   useEffect(() => {
     const initAuth = async () => {
@@ -262,10 +267,50 @@ const App = () => {
 
   const getWaLink = (msg) => `https://wa.me/5511940741355?text=${encodeURIComponent(msg)}`;
 
+  const handleVipSubmit = async (e) => {
+    e.preventDefault();
+    if (!vipForm.name || !vipForm.phone) {
+        setToast("Preencha Nome e Telefone!");
+        setTimeout(() => setToast(null), 3000);
+        return;
+    }
+    
+    setIsSubmittingVip(true);
+    
+    try {
+        const payload = {
+            nome: vipForm.name,
+            telefone: vipForm.phone,
+            email: vipForm.email,
+            data: new Date().toLocaleString('pt-BR')
+        };
+        
+        // Atirando pro Webhook do Make
+        await fetch('https://hook.us2.make.com/tfyb7ui72uf5ysdv7y9jrz1jpqplo1di', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        setVipSuccess(true);
+        setVipForm({ name: '', phone: '', email: '' });
+        
+        setTimeout(() => {
+            setVipSuccess(false);
+        }, 5000);
+        
+    } catch (error) {
+        console.error("Erro ao cadastrar VIP:", error);
+        setToast("Erro de conexão. Tente novamente.");
+        setTimeout(() => setToast(null), 3000);
+    } finally {
+        setIsSubmittingVip(false);
+    }
+  };
+
   return (
     <div className={`font-sans text-white bg-black animate-fadeIn overflow-x-hidden scroll-smooth font-black italic ${activeVenue === 'santos' ? 'theme-santos' : 'theme-spfc'}`}>
       <style>{`
-        @import url('/banner-kmarote/style.css');
         @keyframes customFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .animate-smooth { animation: customFadeIn 0.6s ease-out forwards; }
         @keyframes pulse-emerald { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
@@ -274,8 +319,8 @@ const App = () => {
         .drawer-open { max-height: 4000px; opacity: 1; padding-top: 1rem; }
       `}</style>
       
-      {/* Importação direta e forçada do CSS via Link para evitar bloqueios do React */}
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Doco3/arena-henko@main/banner-kmarote/style.css?update=1" />
+      {/* Importação direta e forçada do CSS via Link para evitar bloqueios do React usando os arquivos em /public */}
+      <link rel="stylesheet" href="/banner-kmarote/style.css" />
 
       {/* Floating WhatsApp */}
       <div className="fixed bottom-6 right-6 z-[250]">
@@ -324,7 +369,7 @@ const App = () => {
           </div>
       </div>
 
-      {/* BANNER PROMOÇÃO PARCEIRO BTS - ESTRUTURA HTML ORIGINAL */}
+      {/* BANNER PROMOÇÃO PARCEIRO BTS - Puxando da pasta local public/banner-kmarote/ */}
       <section className="pt-28 md:pt-32 pb-12 bg-neutral-950 border-b border-purple-900/30 flex justify-center px-6 overflow-hidden">
         <div className="kmarote-banner">
           <img
@@ -367,7 +412,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* BTS SECTION - REDUZIDA, ESGOTADO, INSTAGRAM */}
+      {/* BTS SECTION */}
       <section className="relative py-24 bg-neutral-950 overflow-hidden border-b border-purple-900/30">
         <div className="absolute inset-0 z-0">
           <img src={BTS_BANNER_URL} className="w-full h-full object-cover object-center opacity-20 scale-105" alt="BTS" />
@@ -421,7 +466,7 @@ const App = () => {
       <section id="calendario" className="py-24 px-6 bg-neutral-950 text-white italic border-y border-white/5 relative">
         <h2 className="text-4xl md:text-6xl font-black uppercase text-center mb-16 italic">Agenda <span className={currentVenue.accentClass}>{currentVenue.teamName}</span></h2>
         
-        {/* Next Match Banner - O JOGO MAIS PRÓXIMO DE TODAS AS ABAS */}
+        {/* Next Match Banner */}
         {nextMatch && (
           <div className="max-w-4xl mx-auto mb-16 relative group cursor-pointer" onClick={() => window.open(getWaLink(`Interesse no próximo jogo: ${nextMatch.home} x ${nextMatch.away} no ${currentVenue.name}`))} >
               <div className={`absolute inset-0 ${currentVenue.bgAccentClass} blur-xl opacity-20 rounded-[3rem] group-hover:opacity-40 transition-opacity`} />
@@ -527,7 +572,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* Galeria (CLICÁVEL COM FOTOS DA PASTA PUBLIC) */}
+      {/* Galeria */}
       <section id="galeria" className="py-24 px-6 bg-black border-b border-white/5 text-center italic">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center justify-center mb-16 gap-4">
@@ -571,6 +616,48 @@ const App = () => {
             </div>
           )}
         </div>
+      </section>
+
+      {/* CLUBE VIP - CAPTURA DE LEADS (WEBHOOK MAKE) */}
+      <section id="clube-vip" className="py-24 px-6 bg-neutral-950 text-center italic relative overflow-hidden">
+         <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] ${currentVenue.bgAccentClass} blur-[120px] opacity-5 rounded-full pointer-events-none`} />
+         <div className="max-w-3xl mx-auto relative z-10">
+            <div className={`w-16 h-16 mx-auto rounded-3xl ${currentVenue.bgAccentClass} flex items-center justify-center mb-8 shadow-2xl`}>
+                <Star className={`w-8 h-8 ${activeVenue === 'spfc' ? 'text-white' : 'text-black'}`} />
+            </div>
+            <h2 className="text-4xl md:text-5xl font-black uppercase mb-4 text-white">Clube VIP <span className={currentVenue.accentClass}>Henko</span></h2>
+            <p className="text-gray-400 text-sm mb-12 uppercase tracking-widest font-bold">Cadastre-se para receber promoções exclusivas e acesso antecipado aos ingressos.</p>
+
+            {vipSuccess ? (
+                <div className="bg-emerald-500/10 border border-emerald-500/50 p-8 rounded-[3rem] animate-smooth">
+                    <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
+                    <h3 className="text-2xl text-white uppercase mb-2">Cadastro Confirmado!</h3>
+                    <p className="text-emerald-400 text-sm">Você já faz parte do nosso clube exclusivo.</p>
+                </div>
+            ) : (
+                <form onSubmit={handleVipSubmit} className="bg-black border border-white/10 p-8 md:p-12 rounded-[3rem] shadow-3xl text-left space-y-6 relative overflow-hidden">
+                    <div className="space-y-4">
+                        <div>
+                            <label className="text-[10px] uppercase text-gray-500 tracking-widest block mb-2 px-2">Nome Completo *</label>
+                            <input type="text" required value={vipForm.name} onChange={e => setVipForm({...vipForm, name: e.target.value})} className="w-full bg-neutral-900 border border-neutral-800 focus:border-white rounded-2xl px-6 py-4 text-white outline-none transition-all placeholder:text-gray-700 font-bold" placeholder="Digite seu nome" />
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="text-[10px] uppercase text-gray-500 tracking-widest block mb-2 px-2">WhatsApp *</label>
+                                <input type="tel" required value={vipForm.phone} onChange={e => setVipForm({...vipForm, phone: e.target.value})} className="w-full bg-neutral-900 border border-neutral-800 focus:border-white rounded-2xl px-6 py-4 text-white outline-none transition-all placeholder:text-gray-700 font-bold" placeholder="(00) 00000-0000" />
+                            </div>
+                            <div>
+                                <label className="text-[10px] uppercase text-gray-500 tracking-widest block mb-2 px-2">E-mail</label>
+                                <input type="email" value={vipForm.email} onChange={e => setVipForm({...vipForm, email: e.target.value})} className="w-full bg-neutral-900 border border-neutral-800 focus:border-white rounded-2xl px-6 py-4 text-white outline-none transition-all placeholder:text-gray-700 font-bold" placeholder="contato@email.com" />
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" disabled={isSubmittingVip} className={`w-full py-6 rounded-2xl ${currentVenue.bgAccentClass} ${activeVenue === 'spfc' ? 'text-white' : 'text-black'} text-xs uppercase tracking-[0.2em] shadow-xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:scale-100 mt-4`}>
+                        {isSubmittingVip ? <Loader2 className="animate-spin w-5 h-5" /> : <><Send className="w-5 h-5" /> CADASTRAR AGORA</>}
+                    </button>
+                </form>
+            )}
+         </div>
       </section>
 
       {/* Footer */}
