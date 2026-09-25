@@ -267,46 +267,30 @@ const App = () => {
 
   const getWaLink = (msg) => `https://wa.me/5511940741355?text=${encodeURIComponent(msg)}`;
 
-  const handleVipSubmit = async (e) => {
+const handleVipSubmit = async (e) => {
     e.preventDefault();
-    if (!vipForm.name || !vipForm.phone) {
-        setToast("Preencha Nome e Telefone!");
-        setTimeout(() => setToast(null), 3000);
-        return;
-    }
-    
-    setIsSubmittingVip(true);
-    
+    setVipLoading(true);
     try {
-        const payload = {
-            nome: vipForm.name,
-            telefone: vipForm.phone,
-            email: vipForm.email,
-            data: new Date().toLocaleString('pt-BR')
-        };
-        
-        // Atirando pro Webhook do Make
-        await fetch('https://hook.us2.make.com/tfyb7ui72uf5ysdv7y9jrz1jpqplo1di', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-
-        setVipSuccess(true);
-        setVipForm({ name: '', phone: '', email: '' });
-        
-        setTimeout(() => {
-            setVipSuccess(false);
-        }, 5000);
-        
+      await fetch('https://hook.us2.make.com/cnn42br5qi6lb66qp8pje6e9rzkanwyo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nome: vipData.nome,
+          telefone: vipData.telefone,
+          email: vipData.email,
+          data: new Date().toISOString()
+        })
+      });
+      setVipSuccess(true);
+      setVipData({ nome: '', telefone: '', email: '' });
+      setTimeout(() => setVipSuccess(false), 3000);
     } catch (error) {
-        console.error("Erro ao cadastrar VIP:", error);
-        setToast("Erro de conexão. Tente novamente.");
-        setTimeout(() => setToast(null), 3000);
+      console.error("Erro ao enviar dados VIP:", error);
     } finally {
-        setIsSubmittingVip(false);
+      setVipLoading(false);
     }
-  };
 
   return (
     <div className={`font-sans text-white bg-black animate-fadeIn overflow-x-hidden scroll-smooth font-black italic ${activeVenue === 'santos' ? 'theme-santos' : 'theme-spfc'}`}>
