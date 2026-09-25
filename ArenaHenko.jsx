@@ -407,7 +407,7 @@ const App = () => {
                 <img src={service.imageUrl} className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-all duration-700 group-hover:scale-110" alt={service.title} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
                 <div className="absolute bottom-10 left-10 right-10 text-left">
-                  <div className={`${currentVenue.bgAccentClass} w-12 h-12 rounded-2xl flex items-center justify-center mb-6 shadow-xl`}>{service.icon}</div>
+                  <div className={`${currentVenue.bgAccentClass} ${activeVenue === 'spfc' ? 'text-white' : 'text-black'} w-12 h-12 rounded-2xl flex items-center justify-center mb-6 shadow-xl`}>{service.icon}</div>
                   <h3 className="text-2xl font-black uppercase italic mb-2 text-white">{service.title}</h3>
                   <p className="text-gray-400 text-sm font-normal">{service.desc}</p>
                 </div>
