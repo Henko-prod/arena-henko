@@ -682,7 +682,7 @@ const App = () => {
                 <Star className={`w-8 h-8 ${activeVenue === 'spfc' ? 'text-white' : 'text-black'}`} />
             </div>
             <h2 className="text-4xl md:text-5xl font-black uppercase mb-4 text-white">Clube VIP <span className={currentVenue.accentClass}>Henko</span></h2>
-            <p className="text-gray-400 text-sm mb-12 uppercase tracking-widest font-bold">Cadastre-se para receber promoções exclusivas e acesso antecipado aos ingressos.</p>
+            <p className="text-gray-400 text-sm mb-12 uppercase tracking-widest font-bold">Cadastre-se para receber promoções, informações e participar dos sorteios do Camarote Arena Henko.</p>
 
             {vipSuccess ? (
                 <div className="bg-emerald-500/10 border border-emerald-500/50 p-8 rounded-[3rem] animate-smooth">
