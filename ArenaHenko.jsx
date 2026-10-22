@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Menu as MenuIcon, X, Instagram, Mail, Phone, Calendar, Award, Users, Tv, Music, MapPin, 
   CheckCircle, ArrowRight, Clock, Shield, ChevronDown, Star, MessageCircle, Quote, 
-  LockKeyhole, Coffee, Wine, ShieldCheck, Headphones, MousePointerClick, Smartphone, UserCheck,
+  Coffee, Wine, ShieldCheck, Headphones, MousePointerClick, Smartphone, UserCheck,
   Beer, Zap, Play, Image as ImageIcon, Plus, Trash2, FolderOpen, AlertTriangle, Loader2, Download, Link as LinkIcon, ArrowLeft,
   Sparkles, Heart, MicVocal, Globe, Flame, Music2, TrendingUp, Verified, Info, Ticket, RefreshCw,
   Send
@@ -27,7 +27,6 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const ADMIN_HASH = "SGVua29fTWFzdGVyXzIwMjZfU2VjdXJlISM="; 
 const LOGO_URL = 'https://i.imgur.com/vIWDDID.png'; 
 const BTS_BANNER_URL = 'https://static.wikia.nocookie.net/the-bangtan-boys/images/e/ed/BTS_ARIRANG_Concept_Picture.png/revision/latest?cb=20260313221019';
 
@@ -244,8 +243,6 @@ const App = () => {
   const [toast, setToast] = useState(null);
   const [activeAlbumId, setActiveAlbumId] = useState(null);
   const [isAlbumOpen, setIsAlbumOpen] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [adminInputPass, setAdminInputPass] = useState('');
 
   // Estados do Formulário VIP
   const [vipForm, setVipForm] = useState({ name: '', phone: '', email: '' });
@@ -329,18 +326,6 @@ const App = () => {
 
     return upcoming.length > 0 ? upcoming[0] : null;
   }, [currentVenue, today]);
-
-  const handleAdminLogin = (e) => {
-    e.preventDefault();
-    if (btoa(adminInputPass) === ADMIN_HASH) {
-      setToast("Acesso Admin Liberado");
-      setTimeout(() => setToast(null), 3000);
-      setIsLoginModalOpen(false);
-    } else {
-      setToast("Senha incorreta");
-      setTimeout(() => setToast(null), 3000);
-    }
-  };
 
   const getWaLink = (msg) => `https://wa.me/5511940741355?text=${encodeURIComponent(msg)}`;
 
@@ -472,7 +457,6 @@ const App = () => {
         
         <div className="hidden lg:flex items-center gap-8 uppercase text-[10px] tracking-[0.2em] text-white/80">
             {NAV_LINKS.map(link => <a key={link.name} href={link.href} className={`hover:${currentVenue.accentClass} transition-all`}>{link.name}</a>)}
-            <button onClick={() => setIsLoginModalOpen(true)} className={`hover:${currentVenue.accentClass} transition-all opacity-20`}><LockKeyhole size={14}/></button>
         </div>
         <button onClick={() => setIsMenuOpen(true)} className="lg:hidden text-white p-2 hover:bg-white/5 rounded-lg transition-all"><MenuIcon /></button>
       </nav>
@@ -662,13 +646,13 @@ const App = () => {
           {newsLoading ? (
             <p className="text-gray-400 text-sm py-8">Buscando notícias recentes...</p>
           ) : news[activeVenue].length ? (
-            <div className="grid md:grid-cols-3 gap-4">
-              {news[activeVenue].slice(0,6).map(item=><a key={item.link} href={item.link} target="_blank" rel="noopener noreferrer" className="group rounded-3xl bg-black/40 border border-white/10 hover:border-white/30 p-6 transition-colors">
+            <div className="grid md:grid-cols-2 gap-5">
+              {news[activeVenue].slice(0,2).map(item=><a key={item.link} href={item.link} target="_blank" rel="noopener noreferrer" className="group rounded-3xl bg-black/40 border border-white/10 hover:border-white/30 p-6 transition-colors">
                 <span className={`text-[10px] uppercase tracking-widest font-black ${currentVenue.accentClass}`}>ge • Notícias</span>
                 <h3 className="mt-3 text-lg font-bold leading-snug group-hover:underline">{item.title}</h3>
                 <div className="text-xs text-gray-400 mt-5 flex items-center justify-between">
                   <span>{item.date && !Number.isNaN(Date.parse(item.date)) ? new Date(item.date).toLocaleDateString('pt-BR',{timeZone:'America/Sao_Paulo'}) : 'Notícia recente'}</span>
-                  <ArrowRight size={16}/>
+                  <span className="flex items-center gap-1 font-semibold text-gray-200">Ler notícia completa no ge <ArrowRight size={16}/></span>
                 </div>
               </a>)}
             </div>
@@ -806,22 +790,6 @@ const App = () => {
         </div>
         <img src={LOGO_URL} className="h-16 mx-auto opacity-30" alt="" />
       </footer>
-
-      {/* Admin Modal */}
-      {isLoginModalOpen && (
-        <div className="fixed inset-0 z-[300] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-8">
-          <div className="bg-neutral-900 border border-neutral-800 p-16 rounded-[4rem] w-full max-w-md shadow-3xl text-center">
-            <h2 className="text-2xl uppercase mb-8 italic text-white font-black">Painel <span className={currentVenue.accentClass}>Admin</span></h2>
-            <form onSubmit={handleAdminLogin}>
-              <input type="password" placeholder="Senha" value={adminInputPass} onChange={(e) => setAdminInputPass(e.target.value)} className={`w-full bg-black border border-neutral-800 rounded-3xl px-10 py-6 mb-8 text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white text-center tracking-widest font-black transition-all`} />
-              <div className="flex gap-6 font-black">
-                <button type="button" onClick={() => setIsLoginModalOpen(false)} className="flex-1 py-5 text-[11px] uppercase border border-neutral-800 rounded-2xl text-white">Voltar</button>
-                <button type="submit" className={`flex-1 py-5 text-[11px] uppercase ${currentVenue.bgAccentClass} rounded-2xl text-white`}>Entrar</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
       {toast && <div className={`fixed bottom-12 left-1/2 -translate-x-1/2 z-[500] ${currentVenue.bgAccentClass} text-white px-12 py-5 rounded-full font-black text-[11px] uppercase tracking-widest animate-bounce flex items-center gap-3`}><AlertTriangle size={16} /> {toast}</div>}
     </div>
