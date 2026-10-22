@@ -45,7 +45,10 @@ const TEAM_LOGOS = {
   BOCA_JUNIORS: "https://a.espncdn.com/i/teamlogos/soccer/500/5.png",
   INTERNACIONAL: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Escudo_do_Sport_Club_Internacional.svg?utm_source=pt.wikipedia.org&utm_campaign=index&utm_content=original",
   VITORIA: "https://cdn.freebiesupply.com/logos/thumbs/2x/esporte-clube-vitoria-de-salvador-ba-logo.png",
-  VASCO: "https://a.espncdn.com/i/teamlogos/soccer/500/3454.png"
+  VASCO: "https://a.espncdn.com/i/teamlogos/soccer/500/3454.png",
+  CORINTHIANS: "https://a.espncdn.com/i/teamlogos/soccer/500/874.png",
+  BAHIA: "https://a.espncdn.com/i/teamlogos/soccer/500/9967.png",
+  PALMEIRAS: "https://a.espncdn.com/i/teamlogos/soccer/500/2029.png"
 };
 
 const DEFAULT_VENUES_DATA = {
@@ -63,8 +66,7 @@ const DEFAULT_VENUES_DATA = {
     sportData: [
       { id: 1, name: 'Brasileirão', subtitle: 'Série A 2026', image: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/85.png", 
         matches: [ 
-          { id: 'br_spfc_santos', date: '02/10', home: 'SPFC', away: 'SANTOS', time: '20h00', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.SANTOS },
-          { id: 'br_spfc_vitoria', date: '10/10', home: 'SPFC', away: 'VITÓRIA', time: '21h00', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.VITORIA }
+          { id: 'br_spfc_corinthians', date: '04/11', home: 'SPFC', away: 'CORINTHIANS', time: '21h30', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.CORINTHIANS, stadium: 'Vila Belmiro, Santos/SP', notice: 'ATENÇÃO: jogo na Vila Belmiro, não no MorumBIS. Consulte a disponibilidade de hospitalidade.' }
         ] 
       },
       { id: 2, name: 'Copa do Brasil', subtitle: '2026', image: 'https://upload.wikimedia.org/wikipedia/pt/9/96/CopaDoBrasil.png', matches: [] },
@@ -88,14 +90,14 @@ const DEFAULT_VENUES_DATA = {
     sportData: [
       { id: 1, name: 'Brasileirão', subtitle: 'Série A 2026', image: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/85.png", 
         matches: [ 
-          { id: 'br_sfc_2', date: '12/09', home: 'SANTOS', away: 'CRUZEIRO', time: '21h00', homeLogo: TEAM_LOGOS.SANTOS, awayLogo: TEAM_LOGOS.CRUZEIRO },
-          { id: 'br_sfc_fla', date: '08/10', home: 'SANTOS', away: 'FLAMENGO', time: '19h30', homeLogo: TEAM_LOGOS.SANTOS, awayLogo: TEAM_LOGOS.FLAMENGO }
+          { id: 'br_sfc_bahia', date: '24/10', home: 'SANTOS', away: 'BAHIA', time: '21h00', homeLogo: TEAM_LOGOS.SANTOS, awayLogo: TEAM_LOGOS.BAHIA },
+          { id: 'br_sfc_palmeiras', date: '28/10', home: 'SANTOS', away: 'PALMEIRAS', time: '19h30', homeLogo: TEAM_LOGOS.SANTOS, awayLogo: TEAM_LOGOS.PALMEIRAS }
         ] 
       },
       { id: 2, name: 'Copa do Brasil', subtitle: '2026', image: 'https://upload.wikimedia.org/wikipedia/pt/9/96/CopaDoBrasil.png', matches: [] },
       { id: 3, name: 'Paulistão', subtitle: '2026', image: 'https://i.imgur.com/Kl9LPUl.png', matches: [] },
       { id: 4, name: 'Sudamericana', subtitle: '2026', image: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/CONMEBOL_Sudamericana_logo_%282017%29.svg/250px-CONMEBOL_Sudamericana_logo_%282017%29.svg.png', 
-        matches: [ { id: 'sd_sfc_2', date: '09/09', home: 'SANTOS', away: 'ATLÉTICO-MG', time: '19h00', homeLogo: TEAM_LOGOS.SANTOS, awayLogo: TEAM_LOGOS.ATLETICO_MG } ] }
+        matches: [] }
     ]
   }
 };
@@ -243,8 +245,8 @@ const App = () => {
   const currentAlbum = useMemo(() => STATIC_GALLERY.find(a => a.id === activeAlbumId), [activeAlbumId]);
   
   const today = useMemo(() => {
-    // Current simulated date: Sept 25, 2026
-    const d = new Date('2026-09-25T00:00:00');
+    // Usa a data atual real para ocultar partidas encerradas automaticamente.
+    const d = new Date();
     d.setHours(0, 0, 0, 0);
     return d;
   }, []);
@@ -537,7 +539,8 @@ const App = () => {
                           <span className={`${currentVenue.accentClass} text-[10px] uppercase tracking-widest font-black`}>Próximo Jogo</span>
                       </div>
                       <h3 className="text-3xl font-black uppercase mb-1">{nextMatch.home} x {nextMatch.away}</h3>
-                      <p className="text-gray-400 text-sm">{nextMatch.date} às {nextMatch.time}</p>
+                      <p className="text-gray-400 text-sm">{nextMatch.date} às {nextMatch.time} • {nextMatch.stadium || currentVenue.stadiumName}</p>
+                      {nextMatch.notice && <p className="text-amber-300 font-bold text-xs mt-2">{nextMatch.notice}</p>}
                   </div>
                   <div className="flex items-center gap-6">
                       <img src={nextMatch.homeLogo} className="h-16 w-16 object-contain drop-shadow-xl" alt={nextMatch.home} />
@@ -584,9 +587,10 @@ const App = () => {
                         </button>
                         <div className={`drawer-content ${expandedMatchKey === m.id ? 'drawer-open px-8 pb-8' : ''}`}>
                              <div className="pt-4 border-t border-white/5 grid grid-cols-2 gap-4 text-left">
-                                <div><p className="text-[10px] text-gray-500 uppercase tracking-widest font-black">Horário / Local</p><p className="text-sm font-bold text-white">{m.time} • {currentVenue.stadiumName}</p></div>
-                                <div className="text-right"><p className="text-[10px] text-gray-500 uppercase tracking-widest font-black">Hospitalidade</p><p className="text-sm font-bold text-emerald-500 uppercase">Full Open Bar & Food</p></div>
-                                <button onClick={() => window.open(getWaLink(`Interesse no jogo ${m.home} x ${m.away} (${m.date}) no ${currentVenue.name}`))} className={`col-span-2 mt-4 bg-white/5 ${currentVenue.hoverBorderAccentClass} py-4 rounded-2xl flex items-center justify-center gap-3 transition-all font-black text-xs uppercase tracking-widest text-white border border-transparent hover:bg-neutral-800`}><Ticket size={16}/> Consultar Disponibilidade</button>
+                                <div><p className="text-[10px] text-gray-500 uppercase tracking-widest font-black">Horário / Local</p><p className="text-sm font-bold text-white">{m.time} • {m.stadium || currentVenue.stadiumName}</p></div>
+                                <div className="text-right"><p className="text-[10px] text-gray-500 uppercase tracking-widest font-black">Hospitalidade</p><p className="text-sm font-bold text-emerald-500 uppercase">{m.notice ? 'Consultar disponibilidade' : 'Full Open Bar & Food'}</p></div>
+                                {m.notice && <p className="col-span-2 text-amber-300 text-xs font-bold">{m.notice}</p>}
+                                <button onClick={() => window.open(getWaLink(`Interesse no jogo ${m.home} x ${m.away} (${m.date}), local: ${m.stadium || currentVenue.stadiumName}. Gostaria de confirmar disponibilidade de hospitalidade.`))} className={`col-span-2 mt-4 bg-white/5 ${currentVenue.hoverBorderAccentClass} py-4 rounded-2xl flex items-center justify-center gap-3 transition-all font-black text-xs uppercase tracking-widest text-white border border-transparent hover:bg-neutral-800`}><Ticket size={16}/> Consultar Disponibilidade</button>
                              </div>
                         </div>
                     </div>
