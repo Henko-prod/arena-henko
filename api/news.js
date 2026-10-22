@@ -1,7 +1,7 @@
 // Fontes externas ficam no servidor para evitar problemas de CORS.
 const TEAM_QUERY = {
   spfc: 'site:ge.globo.com/futebol/times/sao-paulo/ "São Paulo"',
-  santos: 'site:ge.globo.com/futebol/times/santos/ "Santos"'
+  santos: 'Santos FC futebol ge.globo.com'
 };
 const decode = v => v.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1').replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;|&apos;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/<[^>]*>/g,'').trim();
 const field = (xml, tag) => decode((xml.match(new RegExp('<'+tag+'(?:\\s[^>]*)?>([\\s\\S]*?)<\\/'+tag+'>','i'))||[])[1]||'');
@@ -13,11 +13,11 @@ export default async function handler(req,res) {
     const response = await fetch(url,{headers:{'User-Agent':'ArenaHenko/1.0'},signal:AbortSignal.timeout(9000)});
     if (!response.ok) throw new Error('Fonte indisponível: '+response.status);
     const xml=await response.text();
-    const items=[...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].slice(0,16).map((m,i)=>({
+    const items=[...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].slice(0,30).map((m,i)=>({
       id: String(i),title:field(m[1],'title').replace(/ - (ge|Globo Esporte)$/i,''),
       link:field(m[1],'link'), date:field(m[1],'pubDate'),
       source:'ge via Google Notícias'
-    })).filter(x=>x.title&&x.link&&/^https:\/\//.test(x.link)).slice(0,6);
+    })).filter(x=>x.title&&x.link&&/^https:\/\//.test(x.link)).filter(x=>club!=='santos'||/santos|peixe/i.test(x.title)).slice(0,2);
     if(!items.length) throw new Error('Sem itens disponíveis');
     res.status(200).json({team:club,items});
   } catch(e){res.status(503).json({team:club,items:[],error:'Notícias indisponíveis temporariamente'});}
