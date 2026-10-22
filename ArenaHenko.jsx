@@ -182,10 +182,60 @@ const ImageWithFallback = ({ src, alt, className }) => {
 const App = () => {
   const [activeVenue, setActiveVenue] = useState('spfc');
   const [venuesData, setVenuesData] = useState(DEFAULT_VENUES_DATA);
+  const [news, setNews] = useState({spfc:[],santos:[]});
+  const [newsLoading, setNewsLoading] = useState(true);
+  const [remoteFixtures, setRemoteFixtures] = useState({spfc:null,santos:null});
+
+  useEffect(() => {
+    let cancelled=false;
+    const fetchNews = async () => {
+      setNewsLoading(true);
+      try {
+        const response=await fetch('/api/news?team='+activeVenue);
+        if (!response.ok) throw new Error('Sem notícias');
+        const payload=await response.json();
+        if(!cancelled) setNews(old=>({...old,[activeVenue]:payload.items||[]}));
+      } catch(e) {
+        if(!cancelled) setNews(old=>({...old,[activeVenue]:[]}));
+      } finally {if(!cancelled) setNewsLoading(false);}
+    };
+    fetchNews();
+    return ()=>{cancelled=true};
+  },[activeVenue]);
+
+  useEffect(() => {
+    let cancelled=false;
+    const syncFixtures=async team=>{
+      try{
+        const r=await fetch('/api/fixtures?team='+team);
+        if(!r.ok) return;
+        const payload=await r.json();
+        if(!cancelled && payload.configured && Array.isArray(payload.matches)) {
+          const localMatches=DEFAULT_VENUES_DATA[team].sportData[0].matches;
+          const mapped=payload.matches.map(m=>{
+            const dateObj=new Date(m.utcDate);
+            const date=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit'}).format(dateObj);
+            const time=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',hour12:false}).format(dateObj).replace(':','h');
+            const special=localMatches.find(x=>x.date===date && ((x.away==='CORINTHIANS' && /corinthians/i.test(m.away)) || (x.away==='PALMEIRAS' && /palmeiras/i.test(m.away))));
+            return {...m,date,time,stadium:special?.stadium || m.stadium || DEFAULT_VENUES_DATA[team].stadiumName,notice:special?.notice||null};
+          });
+          setRemoteFixtures(old=>({...old,[team]:mapped}));
+        }
+      }catch(e){console.warn('Agenda automática temporariamente indisponível');}
+    };
+    syncFixtures('spfc');syncFixtures('santos');
+    return ()=>{cancelled=true};
+  },[]);
+
   const [isFirebaseSyncing, setIsFirebaseSyncing] = useState(false);
   const [user, setUser] = useState(null);
 
-  const currentVenue = venuesData[activeVenue] || DEFAULT_VENUES_DATA[activeVenue];
+  const baseVenue = venuesData[activeVenue] || DEFAULT_VENUES_DATA[activeVenue];
+  const currentVenue = useMemo(() => {
+    const matches=remoteFixtures[activeVenue];
+    if(!matches || !matches.length) return baseVenue;
+    return {...baseVenue,sportData:baseVenue.sportData.map(sport=>sport.id===1?{...sport,matches}:sport)};
+  },[baseVenue,remoteFixtures,activeVenue]);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSportId, setActiveSportId] = useState(1); 
@@ -597,6 +647,33 @@ const App = () => {
                     )) : <p className="text-center text-gray-700 py-16 uppercase text-[10px] font-black">Nenhum jogo previsto no momento.</p>}
                 </div>
             </div>
+        </div>
+      </section>
+
+      <section id="noticias" className="py-20 px-6 bg-neutral-900 text-white border-t border-white/5">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-9">
+            <div>
+              <p className={`text-[11px] uppercase tracking-[0.3em] font-black mb-2 ${currentVenue.accentClass}`}>Arena informa</p>
+              <h2 className="text-3xl md:text-5xl font-black uppercase italic">Notícias do <span className={currentVenue.accentClass}>{activeVenue === 'spfc' ? 'São Paulo' : 'Santos'}</span></h2>
+            </div>
+            <a href={activeVenue==='spfc'?'https://ge.globo.com/futebol/times/sao-paulo/':'https://ge.globo.com/futebol/times/santos/'} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-gray-300 hover:text-white flex gap-2 items-center">Todas as notícias no ge <ArrowRight size={16}/></a>
+          </div>
+          {newsLoading ? (
+            <p className="text-gray-400 text-sm py-8">Buscando notícias recentes...</p>
+          ) : news[activeVenue].length ? (
+            <div className="grid md:grid-cols-3 gap-4">
+              {news[activeVenue].slice(0,6).map(item=><a key={item.link} href={item.link} target="_blank" rel="noopener noreferrer" className="group rounded-3xl bg-black/40 border border-white/10 hover:border-white/30 p-6 transition-colors">
+                <span className={`text-[10px] uppercase tracking-widest font-black ${currentVenue.accentClass}`}>ge • Notícias</span>
+                <h3 className="mt-3 text-lg font-bold leading-snug group-hover:underline">{item.title}</h3>
+                <div className="text-xs text-gray-400 mt-5 flex items-center justify-between">
+                  <span>{item.date && !Number.isNaN(Date.parse(item.date)) ? new Date(item.date).toLocaleDateString('pt-BR',{timeZone:'America/Sao_Paulo'}) : 'Notícia recente'}</span>
+                  <ArrowRight size={16}/>
+                </div>
+              </a>)}
+            </div>
+          ) : <p className="text-sm text-gray-400 py-7">Notícias temporariamente indisponíveis. Acompanhe diretamente pelo ge.</p>}
+          <p className="text-gray-500 text-xs mt-6">Manchetes externas disponibilizadas pelo Google Notícias. Leia a matéria completa na fonte. Arena Henko não é afiliada ao ge.</p>
         </div>
       </section>
 
