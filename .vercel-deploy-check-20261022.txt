@@ -1,0 +1,1 @@
+Diagnostico de webhook GitHub -> Vercel em 2026-10-22. Nenhuma alteracao no aplicativo.
