@@ -232,7 +232,7 @@ const App = () => {
   const baseVenue = venuesData[activeVenue] || DEFAULT_VENUES_DATA[activeVenue];
   const currentVenue = useMemo(() => {
     const matches=remoteFixtures[activeVenue];
-    if(!matches || !matches.length) return baseVenue;
+    if (!Array.isArray(matches)) return baseVenue;
     return {...baseVenue,sportData:baseVenue.sportData.map(sport=>sport.id===1?{...sport,matches}:sport)};
   },[baseVenue,remoteFixtures,activeVenue]);
 
@@ -301,7 +301,7 @@ const App = () => {
   const visibleMatches = useMemo(() => (selectedSport.matches || []).filter(m => {
       const [d, mo] = m.date.split('/');
       // Treat year as 2026 for all matches
-      const pDate = new Date(2026, parseInt(mo) - 1, parseInt(d));
+      const pDate = m.utcDate ? new Date(m.utcDate) : new Date(2026, parseInt(mo) - 1, parseInt(d));
       // Show matches from today onwards
       return pDate >= today;
   }), [selectedSport, today]);
@@ -314,14 +314,14 @@ const App = () => {
 
     const upcoming = allMatches.filter(m => {
       const [d, mo] = m.date.split('/');
-      const pDate = new Date(2026, parseInt(mo) - 1, parseInt(d));
+      const pDate = m.utcDate ? new Date(m.utcDate) : new Date(2026, parseInt(mo) - 1, parseInt(d));
       return pDate >= today;
     });
 
     upcoming.sort((a, b) => {
        const [dA, moA] = a.date.split('/');
        const [dB, moB] = b.date.split('/');
-       return new Date(2026, parseInt(moA) - 1, parseInt(dA)) - new Date(2026, parseInt(moB) - 1, parseInt(dB));
+       return (a.utcDate ? new Date(a.utcDate) : new Date(2026, parseInt(moA) - 1, parseInt(dA))) - (b.utcDate ? new Date(b.utcDate) : new Date(2026, parseInt(moB) - 1, parseInt(dB)));
     });
 
     return upcoming.length > 0 ? upcoming[0] : null;
