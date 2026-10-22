@@ -216,7 +216,7 @@ const App = () => {
             const date=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit'}).format(dateObj);
             const time=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',hour12:false}).format(dateObj).replace(':','h');
             const special=localMatches.find(x=>x.date===date && ((x.away==='CORINTHIANS' && /corinthians/i.test(m.away)) || (x.away==='PALMEIRAS' && /palmeiras/i.test(m.away))));
-            return {...m,date,time,stadium:special?.stadium || m.stadium || DEFAULT_VENUES_DATA[team].stadiumName,notice:special?.notice||null};
+            return {...m,date,time,stadium:m.stadium,notice:m.notice||special?.notice||null};
           });
           setRemoteFixtures(old=>({...old,[team]:mapped}));
         }
