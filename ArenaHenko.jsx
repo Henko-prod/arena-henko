@@ -687,7 +687,7 @@ const App = () => {
                 </div>
               ))}
               {currentAlbum.videos?.map((video, idx) => (
-                <a key={video.href} type="button" onClick={() => setActiveGalleryVideo({ ...video, number: idx + 1 })} aria-label={`Assistir vídeo ${idx + 1} do álbum ${currentAlbum.name}`} className="group relative aspect-square rounded-[2rem] overflow-hidden border border-white/10 bg-neutral-900 shadow-xl hover:border-white/40 transition-all">
+                <button key={video.href} type="button" onClick={() => setActiveGalleryVideo({ ...video, number: idx + 1 })} aria-label={`Assistir vídeo ${idx + 1} do álbum ${currentAlbum.name}`} className="group relative aspect-square rounded-[2rem] overflow-hidden border border-white/10 bg-neutral-900 shadow-xl hover:border-white/40 transition-all">
                   <img
                     src={`https://drive.google.com/thumbnail?id=${video.href.split('/d/')[1]?.split('/')[0]}&sz=w1200`}
                     alt={`Prévia do vídeo ${idx + 1} do show`}
