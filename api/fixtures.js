@@ -45,7 +45,7 @@ export default async function handler(req,res){
         id:'official-spfc-corinthians-2026-11-04',
         utcDate:matchDate,status:'TIMED',
         home:'São Paulo',away:'Corinthians',
-        homeLogo:'https://a.espncdn.com/i/teamlogos/soccer/500/2026.png',
+        homeLogo:'https://www.spfcpedia.com.br/escudos/bra_sp_sao-paulo_1938-19XXcamisa.png',
         awayLogo:'https://a.espncdn.com/i/teamlogos/soccer/500/874.png',
         stadium:'Vila Belmiro',venueVerified:true,
         notice:'Jogo na Vila Belmiro, não no MorumBIS. Confirme a disponibilidade de hospitalidade.'
