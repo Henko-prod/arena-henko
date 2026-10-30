@@ -146,6 +146,14 @@ const REVIEWS_DATA = [
 
 const STATIC_GALLERY = [
   {
+    id: 'bts-28-10-2026',
+    name: 'BTS - 28/10/2026',
+    folder: '',
+    cover: 'https://drive.google.com/thumbnail?id=1ypmunBjXAEkxk7w3c4Mka8Oba5cnnAx4&sz=w1200',
+    photos: [{"name":"IMG_0371.jpg","url":"https://drive.google.com/thumbnail?id=1ypmunBjXAEkxk7w3c4Mka8Oba5cnnAx4&sz=w1600","href":"https://drive.google.com/file/d/1ypmunBjXAEkxk7w3c4Mka8Oba5cnnAx4/view"},{"name":"IMG_0355.JPG","url":"https://drive.google.com/thumbnail?id=1I_C79lRUPexJ4kYr03MVTnr8IfGpPNHp&sz=w1600","href":"https://drive.google.com/file/d/1I_C79lRUPexJ4kYr03MVTnr8IfGpPNHp/view"},{"name":"IMG_0354.JPG","url":"https://drive.google.com/thumbnail?id=1iCKynmUgRA72HP28Z5j5ePNzzgYnsZOi&sz=w1600","href":"https://drive.google.com/file/d/1iCKynmUgRA72HP28Z5j5ePNzzgYnsZOi/view"},{"name":"IMG_0353.JPG","url":"https://drive.google.com/thumbnail?id=1iXUaQvyydw9uAt0yIQhv53OIA08gu1nO&sz=w1600","href":"https://drive.google.com/file/d/1iXUaQvyydw9uAt0yIQhv53OIA08gu1nO/view"},{"name":"IMG_0377.HEIC","url":"https://drive.google.com/thumbnail?id=1TETbCx2GiJjuv6iJVXaDVxHkTIjvc5ZB&sz=w1600","href":"https://drive.google.com/file/d/1TETbCx2GiJjuv6iJVXaDVxHkTIjvc5ZB/view"},{"name":"IMG_0397.HEIC","url":"https://drive.google.com/thumbnail?id=1XKwAzByXFQ2m0EuPzNIbD_0iWxjhk1fo&sz=w1600","href":"https://drive.google.com/file/d/1XKwAzByXFQ2m0EuPzNIbD_0iWxjhk1fo/view"}],
+    videos: [{"name":"Vídeo 01","href":"https://drive.google.com/file/d/1m4dq6Pdrr1icQxRt3v8JUkDshQ_4ahqg/view"},{"name":"Vídeo 02","href":"https://drive.google.com/file/d/1prcHBpN1OHV5RFYUAofTtt2LvrR4Dped/view"},{"name":"Vídeo 03","href":"https://drive.google.com/file/d/1R86smJsTVzfDwqP3g0nMnvIJdRYpxwrX/view"}]
+  },
+  {
     id: 'acdc-28-02',
     name: 'AC/DC - 28/02',
     folder: '/acdc-2802',
@@ -650,7 +658,7 @@ const App = () => {
                   <div className="absolute bottom-10 left-10 text-left">
                      <div className={`${currentVenue.bgAccentClass} text-white px-4 py-1 rounded-full text-[8px] w-fit mb-3 uppercase font-black italic`}>Pasta</div>
                      <h3 className="text-2xl italic uppercase font-black text-white">{album.name}</h3>
-                     <p className="text-gray-400 text-[10px] mt-1 uppercase font-black opacity-60">{album.photos.length} Fotos</p>
+                     <p className="text-gray-400 text-[10px] mt-1 uppercase font-black opacity-60">{album.photos.length} Fotos{album.videos?.length ? ` • ${album.videos.length} Vídeos` : ''}</p>
                   </div>
                 </div>
               ))}
@@ -660,15 +668,22 @@ const App = () => {
               {currentAlbum.photos.map((photoName, idx) => (
                 <div key={idx} className="group relative aspect-square rounded-[2rem] overflow-hidden border border-white/5 bg-neutral-900 shadow-xl">
                    <img 
-                    src={`${currentAlbum.folder}/${photoName}`} 
+                    src={typeof photoName === 'string' ? `${currentAlbum.folder}/${photoName}` : photoName.url} 
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                    alt={`Foto ${idx}`} 
-                    onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&q=80&w=800"; }}
+                    alt={typeof photoName === 'string' ? `Foto ${idx + 1}` : photoName.name} 
+                    onError={(e) => { e.target.style.opacity = '0.1'; }}
                    />
                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                     <button className="bg-white/10 backdrop-blur-md p-4 rounded-2xl text-white"><Download size={24} /></button>
+                     {typeof photoName !== 'string' ? <a href={photoName.href} target="_blank" rel="noopener noreferrer" className="bg-white/10 backdrop-blur-md p-4 rounded-2xl text-white"><ArrowRight size={24} /></a> : <span className="bg-white/10 backdrop-blur-md p-4 rounded-2xl text-white"><Download size={24} /></span>}
                    </div>
                 </div>
+              ))}
+              {currentAlbum.videos?.map((video) => (
+                <a key={video.href} href={video.href} target="_blank" rel="noopener noreferrer" className="group relative aspect-square rounded-[2rem] overflow-hidden border border-purple-500/25 bg-gradient-to-br from-neutral-800 to-purple-950 shadow-xl flex flex-col items-center justify-center gap-4 hover:border-purple-400 transition-colors">
+                  <Play size={46} className="text-purple-300 group-hover:scale-110 transition-transform" />
+                  <span className="text-white text-xs font-black uppercase tracking-widest">{video.name} • Assistir</span>
+                  <span className="text-gray-400 text-[10px] not-italic">Abre no Google Drive</span>
+                </a>
               ))}
             </div>
           )}
