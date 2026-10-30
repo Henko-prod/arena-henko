@@ -110,6 +110,22 @@ const SERVICES_DATA = [
 ];
 
 const SHOWS_DATA = [
+  {
+    id: 'show_foo_fighters',
+    name: 'FOO FIGHTERS - TAKE COVER TOUR',
+    date: '20/02/2027 • 20h',
+    image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&q=85&w=1200',
+    desc: 'Foo Fighters no MorumBIS. Consulte disponibilidade de camarote e condições de hospitalidade com a Arena Henko. Vagas sujeitas a confirmação.',
+    imgClass: 'scale-105 group-hover:scale-110'
+  },
+  {
+    id: 'show_u2',
+    name: 'U2 - THE GREATEST SHOW ON EARTH',
+    date: '10, 12, 14 e 16/03/2027 • 21h',
+    image: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&q=85&w=1200',
+    desc: 'Quatro apresentações no MorumBIS. Consulte disponibilidade para cada data e condições de hospitalidade. Sujeito a confirmação.',
+    imgClass: 'scale-105 group-hover:scale-110'
+  },
   { 
     id: 'show_buteco', 
     name: 'O MAIOR BUTECO DO MUNDO', 
@@ -583,16 +599,16 @@ const App = () => {
       <section id="eventos" className="py-24 px-6 bg-black text-center italic border-b border-white/5">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-6xl font-black uppercase mb-20 italic text-white">Mega <span className={currentVenue.accentClass}>Eventos</span></h2>
-          <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {SHOWS_DATA.map((show) => (
               <div key={show.id} className="group flex flex-col text-left">
                 <div className={`relative h-[400px] rounded-[3.5rem] overflow-hidden mb-8 border border-neutral-800 ${currentVenue.hoverBorderAccentClass} transition-all duration-700 shadow-2xl bg-neutral-900`}>
                   <img src={show.image} className={`w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ${show.imgClass || 'scale-105 group-hover:scale-110'}`} alt={show.name} />
                 </div>
-                <span className={`${currentVenue.accentClass} text-[11px] font-black uppercase tracking-[0.4em] mb-3 block italic`}>{show.date}</span>
+                <span className={`${currentVenue.accentClass} text-[11px] font-black uppercase tracking-[0.4em] mb-3 block italic`}>{show.date} • MorumBIS</span>
                 <h3 className="text-3xl font-black uppercase mb-4 italic text-white leading-none">{show.name}</h3>
                 <p className="text-gray-500 text-sm font-normal mb-8 leading-relaxed italic pr-4">{show.desc}</p>
-                <button onClick={() => window.open(getWaLink(`Interesse oficial no evento ${show.name}.`))} className={`text-[11px] font-black uppercase tracking-widest flex items-center gap-3 text-white transition-colors hover:${currentVenue.accentClass}`}><ArrowRight size={18} /> Ver Disponibilidade</button>
+                <button onClick={() => window.open(getWaLink(`Olá! Gostaria de consultar disponibilidade de camarote e condições de hospitalidade para ${show.name} (${show.date}). Entendo que a disponibilidade está sujeita a confirmação.`))} className={`text-[11px] font-black uppercase tracking-widest flex items-center gap-3 text-white transition-colors hover:${currentVenue.accentClass}`}><ArrowRight size={18} /> Consultar Disponibilidade</button>
               </div>
             ))}
           </div>
