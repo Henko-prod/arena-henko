@@ -696,7 +696,7 @@ const App = () => {
                     <span className="h-16 w-16 rounded-full bg-white/20 backdrop-blur-md border border-white/50 text-white flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all"><Play size={30} fill="currentColor" className="ml-1" /></span>
                   </div>
                   <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-white not-italic">
-                    <span className="font-bold text-sm">Momento ${idx + 1}</span>
+                    <span className="font-bold text-sm">Momento {idx + 1}</span>
                     <span className="text-[10px] uppercase font-semibold tracking-wider text-white/75">Assistir <ArrowRight size={13} className="inline" /></span>
                   </div>
                 </a>
