@@ -122,7 +122,9 @@ const SHOWS_DATA = [
     id: 'show_foo_fighters',
     name: 'FOO FIGHTERS - TAKE COVER TOUR',
     date: '20/02/2027 • 20h',
-    image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&q=85&w=1200',
+    image: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Foo_Fighters_-_Rock_am_Ring_2018-5550.jpg?width=1200',
+    imageCredit: 'Foto: Andreas Lawen / CC BY-SA 4.0',
+    imageCreditUrl: 'https://commons.wikimedia.org/wiki/File:Foo_Fighters_-_Rock_am_Ring_2018-5550.jpg',
     desc: 'Foo Fighters no MorumBIS. Consulte disponibilidade de camarote e condições de hospitalidade com a Arena Henko. Vagas sujeitas a confirmação.',
     imgClass: 'scale-105 group-hover:scale-110'
   },
@@ -130,7 +132,9 @@ const SHOWS_DATA = [
     id: 'show_u2',
     name: 'U2 - THE GREATEST SHOW ON EARTH',
     date: '10, 12, 14 e 16/03/2027 • 21h',
-    image: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&q=85&w=1200',
+    image: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/U2_in_London_%2835012585704%29.jpg?width=1200',
+    imageCredit: 'Foto: U2start / CC BY 2.0',
+    imageCreditUrl: 'https://commons.wikimedia.org/wiki/File:U2_in_London_(35012585704).jpg',
     desc: 'Quatro apresentações no MorumBIS. Consulte disponibilidade para cada data e condições de hospitalidade. Sujeito a confirmação.',
     imgClass: 'scale-105 group-hover:scale-110'
   }
@@ -491,6 +495,34 @@ const App = () => {
           </div>
       </div>
 
+      {/* Destaque dos próximos três grandes shows */}
+      <section className="relative overflow-hidden bg-neutral-950 border-b border-white/10 pt-28 md:pt-32 pb-12 md:pb-16 px-5 md:px-8 text-white" aria-label="Próximos grandes shows na Arena Henko">
+        <div className="absolute -top-24 left-1/2 h-72 w-[80%] -translate-x-1/2 bg-red-700/10 blur-[110px] pointer-events-none" />
+        <div className="relative max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-7 md:mb-9">
+            <div>
+              <p className="text-[10px] md:text-xs tracking-[0.35em] text-red-400 uppercase font-black mb-3">Arena Henko apresenta</p>
+              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-black uppercase italic leading-tight">Três shows gigantes.<br/><span className="text-white/55">Uma experiência única.</span></h1>
+            </div>
+            <a href="#eventos" className="self-start md:self-end inline-flex items-center gap-2 border border-white/30 hover:border-white hover:bg-white/10 rounded-full px-6 py-3 text-[10px] uppercase tracking-widest font-bold transition-colors">Confira os eventos <ArrowRight size={15}/></a>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-5">
+            {SHOWS_DATA.map((show, index) => (
+              <a key={show.id} href="#eventos" className="group relative min-h-[180px] md:min-h-[220px] overflow-hidden rounded-[1.7rem] border border-white/15 bg-neutral-900 hover:border-red-500/70 transition-colors">
+                <img src={show.image} loading={index === 0 ? 'eager' : 'lazy'} alt={`Show ${show.name}`} className="absolute inset-0 h-full w-full object-cover object-center opacity-55 group-hover:opacity-75 group-hover:scale-105 transition-all duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                <div className="absolute bottom-5 left-5 right-5">
+                  <p className="text-[10px] text-red-300 uppercase tracking-[0.2em] font-bold mb-2">{show.date}</p>
+                  <h2 className="text-xl md:text-2xl font-black uppercase italic leading-tight">{show.id === 'show_buteco' ? 'O Maior Buteco do Mundo' : show.id === 'show_foo_fighters' ? 'Foo Fighters' : 'U2'}</h2>
+                  <p className="mt-2 text-[10px] uppercase tracking-wider text-white/75">MorumBIS • Consulte disponibilidade</p>
+                </div>
+              </a>
+            ))}
+          </div>
+          <p className="text-[10px] text-white/45 mt-5 font-medium">Informações e disponibilidade de hospitalidade sujeitas a confirmação com a Arena Henko. Imagens ilustrativas de apresentações anteriores.</p>
+        </div>
+      </section>
+
       <section id="servicos" className={`bg-neutral-900/50 border-y border-white/5 py-24 ${currentVenue.accentClass} text-[10px] tracking-widest uppercase italic text-center font-black transition-colors`}>
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-4xl md:text-6xl font-black uppercase mb-16 italic text-white">Nossos <span className={currentVenue.accentClass}>Serviços</span></h2>
@@ -621,6 +653,7 @@ const App = () => {
                 <div className={`relative h-[400px] rounded-[3.5rem] overflow-hidden mb-8 border border-neutral-800 ${currentVenue.hoverBorderAccentClass} transition-all duration-700 shadow-2xl bg-neutral-900`}>
                   <img src={show.image} className={`w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ${show.imgClass || 'scale-105 group-hover:scale-110'}`} alt={show.name} />
                 </div>
+                {show.imageCredit && <a href={show.imageCreditUrl} target="_blank" rel="noopener noreferrer" className="text-[10px] text-gray-600 hover:text-gray-300 mb-3 not-italic" title="Crédito e licença da fotografia">{show.imageCredit}</a>}
                 <span className={`${currentVenue.accentClass} text-[11px] font-black uppercase tracking-[0.4em] mb-3 block italic`}>{show.date} • MorumBIS</span>
                 <h3 className="text-3xl font-black uppercase mb-4 italic text-white leading-none">{show.name}</h3>
                 <p className="text-gray-500 text-sm font-normal mb-8 leading-relaxed italic pr-4">{show.desc}</p>
