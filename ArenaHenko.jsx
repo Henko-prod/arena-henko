@@ -678,11 +678,27 @@ const App = () => {
                    </div>
                 </div>
               ))}
-              {currentAlbum.videos?.map((video) => (
-                <a key={video.href} href={video.href} target="_blank" rel="noopener noreferrer" className="group relative aspect-square rounded-[2rem] overflow-hidden border border-purple-500/25 bg-gradient-to-br from-neutral-800 to-purple-950 shadow-xl flex flex-col items-center justify-center gap-4 hover:border-purple-400 transition-colors">
-                  <Play size={46} className="text-purple-300 group-hover:scale-110 transition-transform" />
-                  <span className="text-white text-xs font-black uppercase tracking-widest">{video.name} • Assistir</span>
-                  <span className="text-gray-400 text-[10px] not-italic">Abre no Google Drive</span>
+              {currentAlbum.videos?.map((video, idx) => (
+                <a key={video.href} href={video.href} target="_blank" rel="noopener noreferrer" aria-label={`Assistir vídeo ${idx + 1} do álbum ${currentAlbum.name}`} className="group relative aspect-square rounded-[2rem] overflow-hidden border border-white/10 bg-neutral-900 shadow-xl hover:border-white/40 transition-all">
+                  <img
+                    src={`https://drive.google.com/thumbnail?id=${video.href.split('/d/')[1]?.split('/')[0]}&sz=w1200`}
+                    alt={`Prévia do vídeo ${idx + 1} do show`}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = currentAlbum.photos[idx % currentAlbum.photos.length]?.url || currentAlbum.cover;
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                  <span className="absolute top-4 right-4 bg-black/55 backdrop-blur px-3 py-1 rounded-full text-[10px] tracking-widest uppercase text-white font-bold not-italic">Vídeo</span>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="h-16 w-16 rounded-full bg-white/20 backdrop-blur-md border border-white/50 text-white flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all"><Play size={30} fill="currentColor" className="ml-1" /></span>
+                  </div>
+                  <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-white not-italic">
+                    <span className="font-bold text-sm">Momento ${idx + 1}</span>
+                    <span className="text-[10px] uppercase font-semibold tracking-wider text-white/75">Assistir <ArrowRight size={13} className="inline" /></span>
+                  </div>
                 </a>
               ))}
             </div>
