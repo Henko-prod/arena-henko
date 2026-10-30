@@ -110,6 +110,14 @@ const SERVICES_DATA = [
 ];
 
 const SHOWS_DATA = [
+  { 
+    id: 'show_buteco', 
+    name: 'O MAIOR BUTECO DO MUNDO', 
+    date: '12/12/2026', 
+    image: 'https://i.imgur.com/9x3iz4o.png', 
+    desc: 'A maior experiência sertaneja do Brasil com open bar premium e vista privilegiada.',
+    imgClass: 'object-bottom origin-bottom scale-[1.20] group-hover:scale-[1.25]'
+  },
   {
     id: 'show_foo_fighters',
     name: 'FOO FIGHTERS - TAKE COVER TOUR',
@@ -125,14 +133,6 @@ const SHOWS_DATA = [
     image: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&q=85&w=1200',
     desc: 'Quatro apresentações no MorumBIS. Consulte disponibilidade para cada data e condições de hospitalidade. Sujeito a confirmação.',
     imgClass: 'scale-105 group-hover:scale-110'
-  },
-  { 
-    id: 'show_buteco', 
-    name: 'O MAIOR BUTECO DO MUNDO', 
-    date: '12/12/2026', 
-    image: 'https://i.imgur.com/9x3iz4o.png', 
-    desc: 'A maior experiência sertaneja do Brasil com open bar premium e vista privilegiada.',
-    imgClass: 'object-bottom origin-bottom scale-[1.20] group-hover:scale-[1.25]'
   }
 ];
 
@@ -258,6 +258,14 @@ const App = () => {
   const [toast, setToast] = useState(null);
   const [activeAlbumId, setActiveAlbumId] = useState(null);
   const [isAlbumOpen, setIsAlbumOpen] = useState(false);
+  const [activeGalleryVideo, setActiveGalleryVideo] = useState(null);
+
+  useEffect(() => {
+    if (!activeGalleryVideo) return;
+    const onKeyDown = (event) => { if (event.key === 'Escape') setActiveGalleryVideo(null); };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [activeGalleryVideo]);
 
   // Estados do Formulário VIP
   const [vipForm, setVipForm] = useState({ name: '', phone: '', email: '' });
@@ -679,7 +687,7 @@ const App = () => {
                 </div>
               ))}
               {currentAlbum.videos?.map((video, idx) => (
-                <a key={video.href} href={video.href} target="_blank" rel="noopener noreferrer" aria-label={`Assistir vídeo ${idx + 1} do álbum ${currentAlbum.name}`} className="group relative aspect-square rounded-[2rem] overflow-hidden border border-white/10 bg-neutral-900 shadow-xl hover:border-white/40 transition-all">
+                <a key={video.href} type="button" onClick={() => setActiveGalleryVideo({ ...video, number: idx + 1 })} aria-label={`Assistir vídeo ${idx + 1} do álbum ${currentAlbum.name}`} className="group relative aspect-square rounded-[2rem] overflow-hidden border border-white/10 bg-neutral-900 shadow-xl hover:border-white/40 transition-all">
                   <img
                     src={`https://drive.google.com/thumbnail?id=${video.href.split('/d/')[1]?.split('/')[0]}&sz=w1200`}
                     alt={`Prévia do vídeo ${idx + 1} do show`}
@@ -699,7 +707,7 @@ const App = () => {
                     <span className="font-bold text-sm">Momento {idx + 1}</span>
                     <span className="text-[10px] uppercase font-semibold tracking-wider text-white/75">Assistir <ArrowRight size={13} className="inline" /></span>
                   </div>
-                </a>
+                </button>
               ))}
             </div>
           )}
@@ -756,6 +764,34 @@ const App = () => {
         </div>
         <img src={LOGO_URL} className="h-16 mx-auto opacity-30" alt="" />
       </footer>
+
+      {activeGalleryVideo && (
+        <div
+          className="fixed inset-0 z-[400] flex items-center justify-center bg-black/90 backdrop-blur-xl p-3 sm:p-8"
+          role="presentation"
+          onMouseDown={(event) => { if (event.target === event.currentTarget) setActiveGalleryVideo(null); }}
+        >
+          <div role="dialog" aria-modal="true" aria-label={`Vídeo ${activeGalleryVideo.number} da galeria`} className="relative w-full max-w-5xl rounded-3xl border border-white/20 bg-neutral-950 shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between gap-4 px-5 py-4 text-white">
+              <span className="font-bold text-sm sm:text-base">BTS • 28/10/2026 | Vídeo {activeGalleryVideo.number}</span>
+              <button type="button" onClick={() => setActiveGalleryVideo(null)} aria-label="Fechar vídeo" className="rounded-full p-2 hover:bg-white/15 transition-colors"><X size={24} /></button>
+            </div>
+            <iframe
+              key={activeGalleryVideo.href}
+              src={activeGalleryVideo.href.replace('/view', '/preview')}
+              title={`Vídeo ${activeGalleryVideo.number} do BTS`}
+              className="aspect-video w-full bg-black"
+              allow="autoplay; fullscreen"
+              allowFullScreen
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
+            <div className="flex justify-between items-center gap-3 px-5 py-4 text-xs text-gray-400">
+              <span>Vídeo disponibilizado via Google Drive</span>
+              <a href={activeGalleryVideo.href} target="_blank" rel="noopener noreferrer" className="hover:text-white underline">Abrir no Drive</a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {toast && <div className={`fixed bottom-12 left-1/2 -translate-x-1/2 z-[500] ${currentVenue.bgAccentClass} text-white px-12 py-5 rounded-full font-black text-[11px] uppercase tracking-widest animate-bounce flex items-center gap-3`}><AlertTriangle size={16} /> {toast}</div>}
     </div>
