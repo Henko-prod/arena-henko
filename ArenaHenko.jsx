@@ -413,7 +413,6 @@ const App = () => {
       `}</style>
       
       {/* Importação direta e forçada do CSS via Link para evitar bloqueios do React usando os arquivos em /public */}
-      <link rel="stylesheet" href="/banner-kmarote/style.css" />
 
       {/* Floating WhatsApp */}
       <div className="fixed bottom-6 right-6 z-[250]">
