@@ -36,6 +36,22 @@ export default async function handler(req,res){
       homeLogo:m.homeTeam?.crest||'',awayLogo:m.awayTeam?.crest||'',
       stadium:m.arenaVenue, venueVerified:true, notice:team==='spfc' && m.arenaVenue==='Vila Belmiro' ? 'Jogo na Vila Belmiro, não no MorumBIS. Confirme a disponibilidade de hospitalidade.' : team==='santos' && m.arenaVenue==='MorumBIS' ? 'Jogo no MorumBIS, não na Vila Belmiro. Confirme a disponibilidade de hospitalidade.' : null
     }));
+    // Confronto e estádio confirmados pelo calendário oficial do São Paulo FC.
+    // Fallback temporário se o fornecedor esportivo omitir o local ou a partida.
+    if (team === 'spfc' && Date.now() < Date.parse('2026-11-05T00:30:00Z')) {
+      const matchDate='2026-11-05T00:30:00Z';
+      const exists=matches.some(m=>/corinthians/i.test(m.away) && Math.abs(new Date(m.utcDate)-new Date(matchDate))<86400000);
+      if (!exists) matches.push({
+        id:'official-spfc-corinthians-2026-11-04',
+        utcDate:matchDate,status:'TIMED',
+        home:'São Paulo',away:'Corinthians',
+        homeLogo:'https://a.espncdn.com/i/teamlogos/soccer/500/2026.png',
+        awayLogo:'https://a.espncdn.com/i/teamlogos/soccer/500/874.png',
+        stadium:'Vila Belmiro',venueVerified:true,
+        notice:'Jogo na Vila Belmiro, não no MorumBIS. Confirme a disponibilidade de hospitalidade.'
+      });
+      matches.sort((a,b)=>new Date(a.utcDate)-new Date(b.utcDate));
+    }
     res.status(200).json({team,matches,configured:true});
   } catch(e){res.status(503).json({team,matches:[],configured:true,error:'Agenda indisponível temporariamente'});}
 }
