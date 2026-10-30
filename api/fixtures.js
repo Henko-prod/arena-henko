@@ -52,6 +52,22 @@ export default async function handler(req,res){
       });
       matches.sort((a,b)=>new Date(a.utcDate)-new Date(b.utcDate));
     }
+    // Partida validada na tabela detalhada CBF (30/10/2026).
+    // Fallback expira no início do jogo para não manter anúncio antigo.
+    if (team === 'spfc' && Date.now() < Date.parse('2026-11-20T00:30:00Z')) {
+      const matchDate='2026-11-20T00:30:00Z';
+      const exists=matches.some(m=>/fluminense/i.test(m.away) && Math.abs(new Date(m.utcDate)-new Date(matchDate))<86400000);
+      if (!exists) matches.push({
+        id:'official-spfc-fluminense-2026-11-19',
+        utcDate:matchDate,status:'TIMED',
+        home:'São Paulo',away:'Fluminense',
+        homeLogo:'https://www.spfcpedia.com.br/escudos/bra_sp_sao-paulo_1938-19XXcamisa.png',
+        awayLogo:'https://a.espncdn.com/i/teamlogos/soccer/500/3445.png',
+        stadium:'MorumBIS',venueVerified:true,
+        notice:'Partida no MorumBIS. Consulte disponibilidade de hospitalidade.'
+      });
+    }
+    matches.sort((a,b)=>new Date(a.utcDate)-new Date(b.utcDate));
     res.status(200).json({team,matches,configured:true});
   } catch(e){res.status(503).json({team,matches:[],configured:true,error:'Agenda indisponível temporariamente'});}
 }
