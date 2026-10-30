@@ -28,7 +28,6 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const LOGO_URL = 'https://i.imgur.com/vIWDDID.png'; 
-const BTS_BANNER_URL = 'https://static.wikia.nocookie.net/the-bangtan-boys/images/e/ed/BTS_ARIRANG_Concept_Picture.png/revision/latest?cb=20260313221019';
 
 const TEAM_LOGOS = {
   SPFC: "https://www.spfcpedia.com.br/escudos/bra_sp_sao-paulo_1938-19XXcamisa.png",
@@ -111,14 +110,6 @@ const SERVICES_DATA = [
 ];
 
 const SHOWS_DATA = [
-  { 
-    id: 'show_bts', 
-    name: 'BTS - ARIRANG TOUR', 
-    date: '12/11/2026', 
-    image: BTS_BANNER_URL, 
-    desc: 'O retorno triunfal dos reis do K-Pop no Camarote Arena Henko.',
-    imgClass: 'scale-105 group-hover:scale-110'
-  },
   { 
     id: 'show_buteco', 
     name: 'O MAIOR BUTECO DO MUNDO', 
@@ -468,77 +459,6 @@ const App = () => {
             {NAV_LINKS.map(link => <a key={link.name} href={link.href} onClick={() => setIsMenuOpen(false)} className={`text-4xl uppercase hover:${currentVenue.accentClass} italic transition-all`}>{link.name}</a>)}
           </div>
       </div>
-
-      <section className="pt-28 md:pt-32 pb-12 bg-neutral-950 border-b border-purple-900/30 flex justify-center px-6 overflow-hidden">
-        <div className="kmarote-banner">
-          <img
-            className="kb-photo"
-            src="/banner-kmarote/images/show-bts.webp"
-            alt="Público em um show de K-pop visto do camarote, com palco iluminado em roxo e confetes no ar"
-          />
-
-          <div className="kb-logo">
-            <img src="/banner-kmarote/images/logo-kmarote.webp" alt="Logo da promoção Kmarote, da Klove.fan" />
-          </div>
-
-          <div className="kb-text">
-            <p className="kb-headline">
-              1 INGRESSO VIP para o camarote do show do BTS
-              <span className="kb-headline__plus">+</span> 1 viagem para a Coreia do Sul.
-            </p>
-
-            <p className="kb-caption">Adquira seu pack de stickers por R$ 15,00.</p>
-
-            <div className="kb-actions">
-              <a
-                className="kb-pill"
-                href="https://kmarote.klove.fan/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >participe</a>
-              <a
-                className="kb-pill kb-pill--outline"
-                href="https://kmarote.klove.fan/regulamento"
-                target="_blank"
-                rel="noopener noreferrer"
-              >regulamento</a>
-            </div>
-
-            <p className="kb-legal">
-              Consulte o regulamento completo. *Imagens meramente ilustrativas.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="relative py-24 bg-neutral-950 overflow-hidden border-b border-purple-900/30">
-        <div className="absolute inset-0 z-0">
-          <img src={BTS_BANNER_URL} className="w-full h-full object-cover object-center opacity-20 scale-105" alt="BTS" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-purple-900/20 to-black z-10" />
-        </div>
-
-        <div className="relative z-20 max-w-7xl mx-auto px-10 flex flex-col lg:flex-row items-center justify-between gap-10 text-center lg:text-left">
-          <div>
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white mb-3">
-              BTS WORLD TOUR <span className="text-purple-500 block lg:inline">- ARIRANG</span>
-            </h2>
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                <p className="text-sm md:text-base font-black uppercase tracking-widest text-purple-400 italic">MORUMBIS • NOV/2026</p>
-                <span className="bg-purple-600 text-white text-[10px] px-4 py-1.5 rounded-full uppercase tracking-widest font-black shadow-lg">Lote Esgotado</span>
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center lg:items-end gap-5">
-              <p className="text-purple-400 text-[10px] md:text-xs uppercase tracking-[0.2em] font-black">ACOMPANHE NO INSTAGRAM</p>
-              <button 
-                onClick={() => window.open("https://instagram.com/arenahenko", "_blank")}
-                className="w-full sm:w-auto px-10 py-5 rounded-full bg-neutral-900 border border-purple-500 text-white font-black text-xs uppercase tracking-[0.3em] shadow-2xl hover:bg-purple-600 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 group"
-              >
-                ACESSAR INSTAGRAM <Instagram size={18} className="group-hover:scale-110 transition-transform" />
-              </button>
-          </div>
-        </div>
-      </section>
 
       <section id="servicos" className={`bg-neutral-900/50 border-y border-white/5 py-24 ${currentVenue.accentClass} text-[10px] tracking-widest uppercase italic text-center font-black transition-colors`}>
         <div className="max-w-7xl mx-auto px-6">
