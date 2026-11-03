@@ -8,15 +8,6 @@ const approvedVenue = venue => {
   if (/\b(vila belmiro|urbano caldeira)\b/.test(normalized)) return 'Vila Belmiro';
   return null;
 };
-// Exceção verificada: clássico do SPFC transferido para a Vila Belmiro.
-const knownVenue = match => {
-  const date=(match.utcDate||'').slice(0,10);
-  if (date==='2026-11-05' || date==='2026-11-04') {
-    const h=norm(match.homeTeam?.name), a=norm(match.awayTeam?.name);
-    if(h.includes('sao paulo') && a.includes('corinthians')) return 'Vila Belmiro';
-  }
-  return null;
-};
 export default async function handler(req,res){
   res.setHeader('Cache-Control','s-maxage=21600, stale-while-revalidate=43200');
   const key=process.env.FOOTBALL_DATA_API_KEY;
@@ -29,28 +20,20 @@ export default async function handler(req,res){
     const matches=(payload.matches||[]).filter(m=>{
       const home=norm(m.homeTeam?.name);
       return aliases[team].some(name=>home.includes(norm(name)));
-    }).filter(m=>['SCHEDULED','TIMED'].includes(m.status)).filter(m=>new Date(m.utcDate).getTime()>=Date.now()-86400000).map(m=>({...m,arenaVenue:approvedVenue(m.venue)||knownVenue(m)})).filter(m=>Boolean(m.arenaVenue)).slice(0,12).map(m=>({
+    }).filter(m=>['SCHEDULED','TIMED'].includes(m.status)).filter(m=>new Date(m.utcDate).getTime()>=Date.now()-86400000).map(m=>({...m,arenaVenue:approvedVenue(m.venue)})).filter(m=>Boolean(m.arenaVenue)).slice(0,12).map(m=>({
       id:'auto-'+m.id, utcDate:m.utcDate, status:m.status,
       home:m.homeTeam?.shortName||m.homeTeam?.name||'Mandante',
       away:m.awayTeam?.shortName||m.awayTeam?.name||'Visitante',
       homeLogo:m.homeTeam?.crest||'',awayLogo:m.awayTeam?.crest||'',
       stadium:m.arenaVenue, venueVerified:true, notice:team==='spfc' && m.arenaVenue==='Vila Belmiro' ? 'Jogo na Vila Belmiro, não no MorumBIS. Confirme a disponibilidade de hospitalidade.' : team==='santos' && m.arenaVenue==='MorumBIS' ? 'Jogo no MorumBIS, não na Vila Belmiro. Confirme a disponibilidade de hospitalidade.' : null
     }));
-    // Confronto e estádio confirmados pelo calendário oficial do São Paulo FC.
-    // Fallback temporário se o fornecedor esportivo omitir o local ou a partida.
-    if (team === 'spfc' && Date.now() < Date.parse('2026-11-05T00:30:00Z')) {
-      const matchDate='2026-11-05T00:30:00Z';
-      const exists=matches.some(m=>/corinthians/i.test(m.away) && Math.abs(new Date(m.utcDate)-new Date(matchDate))<86400000);
-      if (!exists) matches.push({
-        id:'official-spfc-corinthians-2026-11-04',
-        utcDate:matchDate,status:'TIMED',
-        home:'São Paulo',away:'Corinthians',
-        homeLogo:'https://www.spfcpedia.com.br/escudos/bra_sp_sao-paulo_1938-19XXcamisa.png',
-        awayLogo:'https://a.espncdn.com/i/teamlogos/soccer/500/874.png',
-        stadium:'Vila Belmiro',venueVerified:true,
-        notice:'Jogo na Vila Belmiro, não no MorumBIS. Confirme a disponibilidade de hospitalidade.'
-      });
-      matches.sort((a,b)=>new Date(a.utcDate)-new Date(b.utcDate));
+    // Exclusão editorial solicitada: SPFC x Corinthians em 04/11/2026.
+    // Impede que o fornecedor esportivo reintroduza o jogo na agenda.
+    if (team === 'spfc') {
+      const localDate = utc => new Date(utc).toLocaleDateString('en-CA', {timeZone:'America/Sao_Paulo'});
+      for(let i=matches.length-1;i>=0;i--) {
+        if(/corinthians/i.test(matches[i].away) && localDate(matches[i].utcDate)==='2026-11-04') matches.splice(i,1);
+      }
     }
     // Partida validada na tabela detalhada CBF (30/10/2026).
     // Fallback expira no início do jogo para não manter anúncio antigo.
