@@ -64,7 +64,7 @@ const DEFAULT_VENUES_DATA = {
     sportData: [
       { id: 1, name: 'Brasileirão', subtitle: 'Série A 2026', image: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/85.png", 
         matches: [ 
-          { id: 'br_spfc_corinthians', date: '04/11', home: 'SPFC', away: 'CORINTHIANS', time: '21h30', homeLogo: TEAM_LOGOS.SPFC, awayLogo: TEAM_LOGOS.CORINTHIANS, stadium: 'Vila Belmiro, Santos/SP', notice: 'ATENÇÃO: jogo na Vila Belmiro, não no MorumBIS. Consulte a disponibilidade de hospitalidade.' }
+
         ] 
       },
       { id: 2, name: 'Copa do Brasil', subtitle: '2026', image: 'https://upload.wikimedia.org/wikipedia/pt/9/96/CopaDoBrasil.png', matches: [] },
@@ -230,11 +230,11 @@ const App = () => {
         const payload=await r.json();
         if(!cancelled && payload.configured && Array.isArray(payload.matches)) {
           const localMatches=DEFAULT_VENUES_DATA[team].sportData[0].matches;
-          const mapped=payload.matches.map(m=>{
+          const mapped=payload.matches.filter(m => !(team === 'spfc' && /corinthians/i.test(m.away) && new Date(m.utcDate).toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'}) === '2026-11-04')).map(m=>{
             const dateObj=new Date(m.utcDate);
             const date=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit'}).format(dateObj);
             const time=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',hour12:false}).format(dateObj).replace(':','h');
-            const special=localMatches.find(x=>x.date===date && ((x.away==='CORINTHIANS' && /corinthians/i.test(m.away)) || (x.away==='PALMEIRAS' && /palmeiras/i.test(m.away))));
+            const special=localMatches.find(x=>x.date===date && x.away==='PALMEIRAS' && /palmeiras/i.test(m.away));
             return {...m,date,time,stadium:m.stadium,notice:m.notice||special?.notice||null};
           });
           setRemoteFixtures(old=>({...old,[team]:mapped}));
