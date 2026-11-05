@@ -63,8 +63,8 @@ const DEFAULT_VENUES_DATA = {
     gradientClass: 'bg-gradient-to-r from-[#ff8a00] to-[#e52e12]',
     sportData: [
       { id: 1, name: 'Brasileirão', subtitle: 'Série A 2026', image: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/85.png", 
-        matches: [ 
-
+                matches: [ 
+          { id: 'br_spfc_flu_20261119', date: '19/11', home: 'SPFC', away: 'FLUMINENSE', time: '21h30', homeLogo: TEAM_LOGOS.SPFC, awayLogo: 'https://a.espncdn.com/i/teamlogos/soccer/500/3445.png', stadium: 'MorumBIS' }
         ] 
       },
       { id: 2, name: 'Copa do Brasil', subtitle: '2026', image: 'https://upload.wikimedia.org/wikipedia/pt/9/96/CopaDoBrasil.png', matches: [] },
@@ -87,9 +87,8 @@ const DEFAULT_VENUES_DATA = {
     gradientClass: 'bg-gradient-to-r from-gray-200 to-gray-500 text-black',
     sportData: [
       { id: 1, name: 'Brasileirão', subtitle: 'Série A 2026', image: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/85.png", 
-        matches: [ 
-          { id: 'br_sfc_bahia', date: '24/10', home: 'SANTOS', away: 'BAHIA', time: '21h00', homeLogo: TEAM_LOGOS.SANTOS, awayLogo: TEAM_LOGOS.BAHIA },
-          { id: 'br_sfc_palmeiras', date: '28/10', home: 'SANTOS', away: 'PALMEIRAS', time: '19h30', homeLogo: TEAM_LOGOS.SANTOS, awayLogo: TEAM_LOGOS.PALMEIRAS }
+        matches: [
+          { id: 'br_sfc_gremio_20261123', date: '23/11', home: 'SANTOS', away: 'GRÊMIO', time: '21h00', homeLogo: TEAM_LOGOS.SANTOS, awayLogo: 'https://a.espncdn.com/i/teamlogos/soccer/500/6273.png', stadium: 'MorumBIS', notice: 'Santos mandante no MorumBIS, não na Vila Belmiro. Consulte disponibilidade de hospitalidade.' }
         ] 
       },
       { id: 2, name: 'Copa do Brasil', subtitle: '2026', image: 'https://upload.wikimedia.org/wikipedia/pt/9/96/CopaDoBrasil.png', matches: [] },
