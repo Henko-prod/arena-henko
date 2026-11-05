@@ -145,7 +145,7 @@ const REVIEWS_DATA = [
   { name: "Letícia Rossi", text: "Ambiente familiar e muito seguro. Meus filhos adoraram o espaço.", role: "Google Review" }
 ];
 
-const STATIC_GALLERY = [
+export const STATIC_GALLERY = [
   {
     id: 'bts-28-10-2026',
     name: 'BTS - 28/10/2026',
@@ -178,6 +178,7 @@ const NAV_LINKS = [
   { name: 'Eventos', href: '#eventos' },
   { name: 'Experiência', href: '#servicos' },
   { name: 'Galeria', href: '#galeria' },
+  { name: 'Portfólio Shows', href: '/shows' },
   { name: 'Clube VIP', href: '#clube-vip' },
   { name: 'Contato', href: '#contato' },
 ];
