@@ -74,6 +74,7 @@ export default function ShowsPortfolio() {
               <button key={album.id} type="button" onClick={()=>openAlbum(album.id)} className="relative group text-left rounded-[2rem] overflow-hidden border border-white/15 hover:border-red-500/70 bg-neutral-900 aspect-[4/3] transition-all">
                 <img src={album.cover} alt={album.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-65 transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                {album.featuredVideo && <span className="absolute top-5 right-5 flex items-center gap-2 px-3 py-2 rounded-full bg-red-600/90 text-white text-[10px] font-black uppercase tracking-wider backdrop-blur-sm"><Play size={13} fill="currentColor" /> Vídeo especial</span>}
                 <div className="absolute left-6 right-6 bottom-6">
                   <span className="inline-block bg-red-600 text-white rounded-full px-3 py-1 text-[10px] uppercase font-black tracking-widest mb-3">Álbum</span>
                   <h2 className="font-black uppercase italic text-2xl sm:text-3xl">{album.name}</h2>
@@ -84,6 +85,15 @@ export default function ShowsPortfolio() {
           </div>
         ) : (
           <>
+            {activeAlbum.featuredVideo && (
+              <button type="button" onClick={() => setActiveVideo({video: activeAlbum.featuredVideo, idx: -1})} className="group block relative w-full aspect-video max-h-[500px] overflow-hidden rounded-[1.8rem] sm:rounded-[2.5rem] border border-red-500/30 hover:border-red-500/80 bg-neutral-900 mb-10 text-left shadow-2xl transition-colors" aria-label={`Assistir ${activeAlbum.featuredVideo.title}`}>
+                <img src={thumbnailFromDrive(activeAlbum.featuredVideo.href)||activeAlbum.cover} alt={`Capa do vídeo de apresentação de ${activeAlbum.name}`} className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700" onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src=activeAlbum.cover;}} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                <span className="absolute top-5 left-5 sm:top-8 sm:left-8 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-bold bg-red-600 px-4 py-2 rounded-full">Destaque do show</span>
+                <span className="absolute inset-0 flex items-center justify-center"><span className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-white/20 border border-white/75 backdrop-blur-md flex items-center justify-center group-hover:scale-110 group-hover:bg-red-600/80 transition-all"><Play size={39} fill="currentColor" className="ml-1.5" /></span></span>
+                <span className="absolute bottom-6 left-6 right-6 sm:bottom-9 sm:left-9 text-lg sm:text-3xl font-black uppercase italic tracking-tight">{activeAlbum.featuredVideo.title}<span className="block text-xs sm:text-sm text-white/65 not-italic normal-case mt-2 tracking-normal font-medium">Clique para assistir sem sair do portfólio</span></span>
+              </button>
+            )}
             <p className="text-white/45 text-xs uppercase tracking-widest mb-6 font-bold">{activeAlbum.photos.length} fotos{activeAlbum.videos?.length ? ` • ${activeAlbum.videos.length} vídeos` : ''}</p>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-5">
               {activeAlbum.photos.map((photo, idx) => (
@@ -115,7 +125,7 @@ export default function ShowsPortfolio() {
       {activeVideo && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-8 bg-black/90 backdrop-blur-xl" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setActiveVideo(null);}}>
           <div role="dialog" aria-modal="true" aria-label="Assistir vídeo do show" className="relative w-full max-w-5xl bg-neutral-950 border border-white/20 rounded-2xl overflow-hidden">
-            <div className="px-5 py-4 flex justify-between items-center"><span className="font-bold text-sm">Vídeo {activeVideo.idx+1} • {activeAlbum.name}</span><button type="button" onClick={()=>setActiveVideo(null)} aria-label="Fechar vídeo" className="p-2 rounded-full hover:bg-white/10"><X/></button></div>
+            <div className="px-5 py-4 flex justify-between items-center"><span className="font-bold text-sm">{activeVideo.idx < 0 ? activeVideo.video.title : `Vídeo ${activeVideo.idx+1} • ${activeAlbum.name}`}</span><button type="button" onClick={()=>setActiveVideo(null)} aria-label="Fechar vídeo" className="p-2 rounded-full hover:bg-white/10"><X/></button></div>
             <iframe key={activeVideo.video.href} src={activeVideo.video.href.replace('/view','/preview')} title={`Vídeo ${activeVideo.idx+1}`} className="aspect-video w-full bg-black" allow="autoplay; fullscreen" allowFullScreen referrerPolicy="strict-origin-when-cross-origin"/>
             <div className="px-5 py-4 flex justify-end"><a href={activeVideo.video.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs text-white/70 hover:text-white">Abrir original <ExternalLink size={13}/></a></div>
           </div>
