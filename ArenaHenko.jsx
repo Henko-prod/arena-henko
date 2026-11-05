@@ -158,6 +158,7 @@ export const STATIC_GALLERY = [
   {
     id: 'acdc-28-02',
     name: 'AC/DC - 28/02',
+    featuredVideo: {title:'Vídeo de apresentação • AC/DC',href:'https://drive.google.com/file/d/1LZddTJbYg_PiXKdbowxljT8JSZRawqe-/view'},
     folder: '/acdc-2802',
     cover: 'https://www.rbsdirect.com.br/filestore/8/5/6/4/1/9/4_9472ea360a1702b/4914658_704acea3d79d4d7.jpg?version=1575255600',
     photos: Array.from({length: 30}, (_, i) => `show-acdc-${String(i+1).padStart(2, '0')}.jpeg`)
