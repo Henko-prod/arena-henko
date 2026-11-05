@@ -50,6 +50,21 @@ export default async function handler(req,res){
         notice:'Partida no MorumBIS. Consulte disponibilidade de hospitalidade.'
       });
     }
+    // GE e CBF (30/10/2026): Santos recebe o Grêmio no MorumBIS,
+    // em 23/11, às 21h. Expira automaticamente ao começar a partida.
+    if (team === 'santos' && Date.now() < Date.parse('2026-11-24T00:00:00Z')) {
+      const matchDate='2026-11-24T00:00:00Z';
+      const exists=matches.some(m=>/gr[eê]mio/i.test(norm(m.away)) && Math.abs(new Date(m.utcDate)-new Date(matchDate))<86400000);
+      if (!exists) matches.push({
+        id:'official-santos-gremio-2026-11-23',
+        utcDate:matchDate,status:'TIMED',
+        home:'Santos',away:'Grêmio',
+        homeLogo:'https://a.espncdn.com/i/teamlogos/soccer/500/2674.png',
+        awayLogo:'https://a.espncdn.com/i/teamlogos/soccer/500/6273.png',
+        stadium:'MorumBIS',venueVerified:true,
+        notice:'Santos mandante no MorumBIS, não na Vila Belmiro. Consulte disponibilidade de hospitalidade.'
+      });
+    }
     matches.sort((a,b)=>new Date(a.utcDate)-new Date(b.utcDate));
     res.status(200).json({team,matches,configured:true});
   } catch(e){res.status(503).json({team,matches:[],configured:true,error:'Agenda indisponível temporariamente'});}
